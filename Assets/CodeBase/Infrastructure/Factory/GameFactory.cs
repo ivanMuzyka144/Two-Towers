@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using CodeBase.Infrastructure.AssetManagement;
+using CodeBase.Logic.Tower;
 using CodeBase.Services.PersistentProgress;
 using UnityEngine;
 
@@ -12,7 +13,6 @@ namespace CodeBase.Infrastructure.Factory
 
     private readonly IAssetProvider _assets;
     private readonly IPersistentProgressService _persistentProgressService;
-    private GameObject _heroGameObject;
 
     public GameFactory(IAssetProvider assets, IPersistentProgressService persistentProgressService)
     {
@@ -32,6 +32,18 @@ namespace CodeBase.Infrastructure.Factory
     {
       ProgressReaders.Clear();
       ProgressWriters.Clear();
+    }
+
+    public Elevator CreateElevator(Vector3 at) => 
+      _assets.Instantiate(AssetPath.ElevatorPath, at).GetComponent<Elevator>();
+
+    public Room CreateRoom(Transform parent)=> 
+      _assets.Instantiate(AssetPath.RoomPath, parent).GetComponent<Room>();
+
+    public Tower CreateTower(Vector3 at)
+    {
+      Tower tower = _assets.Instantiate(AssetPath.TowerPath, at).GetComponent<Tower>();
+      return tower;
     }
 
     private GameObject InstantiateRegistered(string prefabPath, Vector3 at)

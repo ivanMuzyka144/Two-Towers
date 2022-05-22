@@ -1,18 +1,21 @@
-using System.Collections;
-using System.Collections.Generic;
+using CodeBase.Logic.PlayerLogic;
 using UnityEngine;
 
-public class Elevator : MonoBehaviour
+namespace CodeBase.Logic.Tower
 {
-    // Start is called before the first frame update
-    void Start()
+  public class Elevator : MonoBehaviour
+  {
+    private Tower _tower;
+    private Player _player;
+    public void Construct(Tower tower, Player player)
     {
-        
+      _tower = tower;
+      _player = player;
     }
 
-    // Update is called once per frame
-    void Update()
+    public void MoveElevatorToFloor()
     {
-        
+      
     }
+  }
 }
