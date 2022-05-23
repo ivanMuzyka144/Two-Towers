@@ -1,3 +1,4 @@
+using System;
 using CodeBase.Data;
 using CodeBase.Logic.PlayerLogic;
 using UnityEngine;
@@ -22,13 +23,23 @@ namespace CodeBase.Logic.Tower.ElevatorLogic
       _selector.Construct(elevatorData);
     }
 
-    public void MoveElevator(Vector3 newPosition)
+    public void MoveElevator(int selectedFloor, Vector3 newPosition, Action onCompleted)
+    {
+      SetNewPosition(newPosition);
+      _shower.ShowFloorAnim(selectedFloor, () =>OpenDoor(onCompleted));
+    }
+
+    private void OpenDoor(Action onCompleted)
+    {
+      _finishDoor.OpenDoor();
+      onCompleted.Invoke();
+    }
+    
+    private void SetNewPosition(Vector3 newPosition)
     {
       _player.gameObject.SetActive(false);
       _player.transform.parent = transform;
-      
       transform.position = newPosition;
-      
       _player.transform.parent = null;
       _player.gameObject.SetActive(true);
     }

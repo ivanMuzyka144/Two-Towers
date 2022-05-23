@@ -47,10 +47,15 @@ namespace CodeBase.Logic.Tower
         {
             //spawn barier
             int selectedFloor = _sharedData.SharedData.ElevatorData.SelectedFloor;
-            _elevator.MoveElevator(GetPositionOfFloor(selectedFloor));
+            _elevator.MoveElevator(selectedFloor, GetPositionOfFloor(selectedFloor), OnElevatorAppear);
         }
 
         private Vector3 GetPositionOfFloor(int selectedFloor) => 
             _rooms[selectedFloor].transform.position;
+
+        private void OnElevatorAppear()
+        {
+            
+        }
     }
 }

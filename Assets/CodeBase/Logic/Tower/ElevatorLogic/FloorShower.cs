@@ -1,18 +1,27 @@
+using System;
 using System.Collections;
-using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
-public class FloorShower : MonoBehaviour
+namespace CodeBase.Logic.Tower.ElevatorLogic
 {
-    // Start is called before the first frame update
-    void Start()
+    public class FloorShower : MonoBehaviour
     {
-        
-    }
+        [SerializeField] private TextMeshPro _floorText;
+        [SerializeField] private float _tickTime = 0.75f;
+        public void ShowFloorAnim(int selectedFloor, Action onCompleted)
+        {
+            StartCoroutine(CO_ShowFloorAnim(selectedFloor, onCompleted));
+        }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        private IEnumerator CO_ShowFloorAnim(int selectedFloor, Action onCompleted)
+        {
+            for (int i = 0; i <= selectedFloor; i++)
+            {
+                _floorText.text = i.ToString();
+                yield return new WaitForSeconds(_tickTime);
+            }
+            onCompleted.Invoke();
+        }
     }
 }
