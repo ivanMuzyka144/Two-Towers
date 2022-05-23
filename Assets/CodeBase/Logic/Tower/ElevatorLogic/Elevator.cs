@@ -6,6 +6,9 @@ namespace CodeBase.Logic.Tower.ElevatorLogic
 {
   public class Elevator : MonoBehaviour
   {
+    [SerializeField] private Door _startDoor;
+    [SerializeField] private Door _finishDoor;
+    [Space(10)]
     [SerializeField] private FloorSelector _selector;
     [SerializeField] private FloorShower _shower;
     
@@ -21,7 +24,13 @@ namespace CodeBase.Logic.Tower.ElevatorLogic
 
     public void MoveElevator(Vector3 newPosition)
     {
+      _player.gameObject.SetActive(false);
+      _player.transform.parent = transform;
       
+      transform.position = newPosition;
+      
+      _player.transform.parent = null;
+      _player.gameObject.SetActive(true);
     }
   }
 }

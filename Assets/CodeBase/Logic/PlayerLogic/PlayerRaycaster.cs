@@ -11,9 +11,9 @@ namespace CodeBase.Logic.PlayerLogic
 
     private bool _setup;
     
-    public void Construct(Camera camera)
+    public void Construct(Camera cam)
     {
-      _camera = camera;
+      _camera = cam;
       _setup = true;
     }
     private void Update()
@@ -24,7 +24,7 @@ namespace CodeBase.Logic.PlayerLogic
 
     private void Raycast()
     {
-      Ray ray = Camera.main.ViewportPointToRay(_rayOrigin);
+      Ray ray = _camera.ViewportPointToRay(_rayOrigin);
       RaycastHit hit;
 
       if (Physics.Raycast(ray, out hit)) 

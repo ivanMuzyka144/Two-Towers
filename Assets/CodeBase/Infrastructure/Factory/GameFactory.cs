@@ -14,6 +14,7 @@ namespace CodeBase.Infrastructure.Factory
     public List<ISavedProgressReader> ProgressReaders { get; } = new List<ISavedProgressReader>();
     public List<ISavedProgress> ProgressWriters { get; } = new List<ISavedProgress>();
     public GameObject Hud => _hud;
+    public Tower Tower => _tower;
     public Player Hero => _hero;
 
     private readonly IAssetProvider _assets;
@@ -21,6 +22,7 @@ namespace CodeBase.Infrastructure.Factory
     private readonly ISharedDataService _sharedDataService;
     
     private GameObject _hud;
+    private Tower _tower;
     private Player _hero;
     
     public GameFactory(IAssetProvider assets, IPersistentProgressService persistentProgressService, ISharedDataService sharedDataService)
@@ -59,9 +61,9 @@ namespace CodeBase.Infrastructure.Factory
 
     public Tower CreateTower(Vector3 at)
     {
-      Tower tower = _assets.Instantiate(AssetPath.TowerPath, at).GetComponent<Tower>();
-      tower.Construct(_sharedDataService);
-      return tower;
+      _tower = _assets.Instantiate(AssetPath.TowerPath, at).GetComponent<Tower>();
+      _tower.Construct(_sharedDataService);
+      return _tower;
     }
 
     public Room CreateRoom(Transform parent)=> 
@@ -70,7 +72,7 @@ namespace CodeBase.Infrastructure.Factory
     public Elevator CreateElevator(Vector3 at)
     {
       Elevator elevator = _assets.Instantiate(AssetPath.ElevatorPath, at).GetComponent<Elevator>();
-      elevator.Construct(null, null, _sharedDataService.SharedData.ElevatorData);
+      elevator.Construct(_tower, _hero, _sharedDataService.SharedData.ElevatorData);
       return elevator;
     }
 

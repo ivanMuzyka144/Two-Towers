@@ -14,6 +14,7 @@ namespace CodeBase.Infrastructure.Factory
     List<ISavedProgressReader> ProgressReaders { get; }
     List<ISavedProgress> ProgressWriters { get; }
     GameObject Hud { get; }
+    Tower Tower { get; }
     Player Hero { get; }
     void Cleanup();
     Elevator CreateElevator(Vector3 at);
