@@ -1,7 +1,10 @@
 using System.Collections.Generic;
 using CodeBase.Infrastructure.AssetManagement;
+using CodeBase.Logic.PlayerLogic;
 using CodeBase.Logic.Tower;
+using CodeBase.Logic.Tower.ElevatorLogic;
 using CodeBase.Services.PersistentProgress;
+using CodeBase.Services.SharedData;
 using UnityEngine;
 
 namespace CodeBase.Infrastructure.Factory
@@ -10,14 +13,21 @@ namespace CodeBase.Infrastructure.Factory
   {
     public List<ISavedProgressReader> ProgressReaders { get; } = new List<ISavedProgressReader>();
     public List<ISavedProgress> ProgressWriters { get; } = new List<ISavedProgress>();
+    public GameObject Hud => _hud;
+    public Player Hero => _hero;
 
     private readonly IAssetProvider _assets;
     private readonly IPersistentProgressService _persistentProgressService;
-
-    public GameFactory(IAssetProvider assets, IPersistentProgressService persistentProgressService)
+    private readonly ISharedDataService _sharedDataService;
+    
+    private GameObject _hud;
+    private Player _hero;
+    
+    public GameFactory(IAssetProvider assets, IPersistentProgressService persistentProgressService, ISharedDataService sharedDataService)
     {
       _assets = assets;
       _persistentProgressService = persistentProgressService;
+      _sharedDataService = sharedDataService;
     }
 
     public void Register(ISavedProgressReader progressReader)
@@ -34,16 +44,34 @@ namespace CodeBase.Infrastructure.Factory
       ProgressWriters.Clear();
     }
 
-    public Elevator CreateElevator(Vector3 at) => 
-      _assets.Instantiate(AssetPath.ElevatorPath, at).GetComponent<Elevator>();
+    public Player CreateHero(Vector3 at, Quaternion rotation)
+    {
+      _hero = _assets.Instantiate(AssetPath.HeroPath, at, rotation).GetComponent<Player>();
+      _hero.Construct(Camera.main); //TODO rework
+      return _hero;
+    }
 
-    public Room CreateRoom(Transform parent)=> 
-      _assets.Instantiate(AssetPath.RoomPath, parent).GetComponent<Room>();
+    public GameObject CreateHud()
+    {
+      _hud = _assets.Instantiate(AssetPath.HudPath);
+      return _hud;
+    }
 
     public Tower CreateTower(Vector3 at)
     {
       Tower tower = _assets.Instantiate(AssetPath.TowerPath, at).GetComponent<Tower>();
+      tower.Construct(_sharedDataService);
       return tower;
+    }
+
+    public Room CreateRoom(Transform parent)=> 
+      _assets.Instantiate(AssetPath.RoomPath, parent).GetComponent<Room>();
+
+    public Elevator CreateElevator(Vector3 at)
+    {
+      Elevator elevator = _assets.Instantiate(AssetPath.ElevatorPath, at).GetComponent<Elevator>();
+      elevator.Construct(null, null, _sharedDataService.SharedData.ElevatorData);
+      return elevator;
     }
 
     private GameObject InstantiateRegistered(string prefabPath, Vector3 at)

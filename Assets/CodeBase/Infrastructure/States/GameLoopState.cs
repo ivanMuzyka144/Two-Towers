@@ -1,16 +1,24 @@
-﻿namespace CodeBase.Infrastructure.States
+﻿using CodeBase.Services.CursorService;
+
+namespace CodeBase.Infrastructure.States
 {
   public class GameLoopState : IState
   {
-    public GameLoopState(GameStateMachine stateMachine)
-    {
-    }
+    private readonly GameStateMachine _stateMachine;
+    private readonly ICursorService _cursorService;
 
-    public void Exit()
+    public GameLoopState(GameStateMachine stateMachine, ICursorService cursorService)
     {
+      _stateMachine = stateMachine;
+      _cursorService = cursorService;
     }
 
     public void Enter()
+    {
+      _cursorService.HideCursor();
+    }
+
+    public void Exit()
     {
     }
   }

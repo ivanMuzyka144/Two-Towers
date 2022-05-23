@@ -1,4 +1,7 @@
+using System;
 using System.Collections.Generic;
+using CodeBase.Logic.Tower.ElevatorLogic;
+using CodeBase.Services.SharedData;
 using UnityEngine;
 
 namespace CodeBase.Logic.Tower
@@ -7,7 +10,19 @@ namespace CodeBase.Logic.Tower
     {
         private List<Room> _rooms = new List<Room>();
         private Elevator _elevator;
-        
+        private ISharedDataService _sharedData;
+
+        public void Construct(ISharedDataService sharedData)
+        {
+            _sharedData = sharedData;
+            _sharedData.SharedData.ElevatorData.FloorSelected += HandleFloorSelected;
+        }
+
+        private void OnDestroy()
+        {
+            _sharedData.SharedData.ElevatorData.FloorSelected -= HandleFloorSelected;
+        }
+
         public void AddRoom(Room room) => 
             _rooms.Add(room);
 
@@ -26,6 +41,13 @@ namespace CodeBase.Logic.Tower
         public void SetupElevator(Elevator elevator)
         {
             _elevator = elevator;
+        }
+
+        private void HandleFloorSelected()
+        {
+            int selectedFloor = _sharedData.SharedData.ElevatorData.SelectedFloor;
+            
+           // _elevator.
         }
     }
 }

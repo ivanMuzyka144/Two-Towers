@@ -10,5 +10,6 @@ public class Room : MonoBehaviour
     public void Construct(bool isFirst, Color roomColor)
     {
         _roomPresenter.SetupColor(roomColor);
+        _roomPresenter.SetupArchitecture(isFirst);
     }
 }

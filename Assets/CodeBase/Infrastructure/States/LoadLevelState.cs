@@ -2,8 +2,11 @@
 using CodeBase.Data;
 using CodeBase.Infrastructure.Factory;
 using CodeBase.Logic;
+using CodeBase.Logic.PlayerLogic;
 using CodeBase.Logic.Tower;
+using CodeBase.Logic.Tower.ElevatorLogic;
 using CodeBase.Services.PersistentProgress;
+using CodeBase.Services.SharedData;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -18,14 +21,17 @@ namespace CodeBase.Infrastructure.States
     private readonly SceneLoader _sceneLoader;
     private readonly IGameFactory _factory;
     private readonly IPersistentProgressService _progressService;
+    private readonly ISharedDataService _sharedDataService;
 
     public LoadLevelState(GameStateMachine gameStateMachine, SceneLoader sceneLoader, 
-      IGameFactory factory, IPersistentProgressService progressService)
+      IGameFactory factory, IPersistentProgressService progressService,
+      ISharedDataService sharedDataService)
     {
       _stateMachine = gameStateMachine;
       _sceneLoader = sceneLoader;
       _factory = factory;
       _progressService = progressService;
+      _sharedDataService = sharedDataService;
     }
 
     public void Enter(string sceneName)
@@ -52,8 +58,19 @@ namespace CodeBase.Infrastructure.States
 
     private void InitGameWorld()
     {
+      InitHero();
+      InitHud();
       InitTowers();
     }
+
+    private void InitHero()
+    {
+      GameObject heroSpawnPoint = GameObject.Find("HeroSpawnPoint");
+       _factory.CreateHero(heroSpawnPoint.transform.position, heroSpawnPoint.transform.rotation);
+    }
+
+    private void InitHud() => 
+      _factory.CreateHud();
 
     private void InitTowers()
     {
@@ -67,22 +84,30 @@ namespace CodeBase.Infrastructure.States
     private void InitFirstTower(Color[] generatedColors)
     {
       GameObject firstTowerSpawnPoint = GameObject.Find("TowerSpawnPoint");
-      
-      Tower tower = _factory.CreateTower(firstTowerSpawnPoint.transform.position);
-      int howManyFloors = 4;
+      int howManyFloors = 4;//static data
 
-      for (int i = 0; i < howManyFloors; i++)
-      {
-        Room room = _factory.CreateRoom(tower.transform);
-        room.Construct(i==0, generatedColors[i]);
-        tower.AddRoom(room);
-      }
+      Tower tower = _factory.CreateTower(firstTowerSpawnPoint.transform.position);
+
+      for (int i = 0; i < howManyFloors; i++) 
+        InitRoom(tower, generatedColors[i], i == 0);
+
       tower.SetupRooms();
+      
+      Elevator elevator = _factory.CreateElevator(tower.transform.position);
+      
+      tower.SetupElevator(elevator);
     }
 
     private void InitSecondTower(Color[] generatedColors)
     {
       
+    }
+
+    private void InitRoom(Tower tower, Color colors, bool isFirst)
+    {
+      Room room = _factory.CreateRoom(tower.transform);
+      room.Construct(isFirst, colors);
+      tower.AddRoom(room);
     }
 
     private Color[] GetRandomColors(int howManyFloors)

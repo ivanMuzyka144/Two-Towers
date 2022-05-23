@@ -1,9 +1,12 @@
-﻿using CodeBase.Infrastructure.AssetManagement;
+﻿using CodeBase.Data;
+using CodeBase.Infrastructure.AssetManagement;
 using CodeBase.Infrastructure.Factory;
 using CodeBase.Services;
+using CodeBase.Services.CursorService;
 using CodeBase.Services.Input;
 using CodeBase.Services.PersistentProgress;
 using CodeBase.Services.SaveLoad;
+using CodeBase.Services.SharedData;
 using CodeBase.Services.StaticData;
 
 namespace CodeBase.Infrastructure.States
@@ -32,12 +35,14 @@ namespace CodeBase.Infrastructure.States
 
     private void RegisterServices()
     {
+      _services.RegisterSingle(SharedDataService());
       _services.RegisterSingle<IInputService>(InputService());
+      _services.RegisterSingle<ICursorService>(new GameCursorService());
       _services.RegisterSingle<IStaticDataService>(new StaticDataService());
       _services.RegisterSingle<IAssetProvider>(new AssetProvider());
       _services.RegisterSingle<IPersistentProgressService>(new PersistentProgressService());
       _services.RegisterSingle<IGameFactory>(new GameFactory(_services.Single<IAssetProvider>(),
-        _services.Single<IPersistentProgressService>()));
+        _services.Single<IPersistentProgressService>(), _services.Single<ISharedDataService>()));
       _services.RegisterSingle<ISaveLoadService>(new SaveLoadService(_services.Single<IPersistentProgressService>(), _services.Single<IGameFactory>()));
     }
 
@@ -47,5 +52,12 @@ namespace CodeBase.Infrastructure.States
 
     private static IInputService InputService() =>
       null;
+
+    private static ISharedDataService SharedDataService()
+    {
+      ISharedDataService sharedDataService = new SharedDataService();
+      sharedDataService.SharedData = new GameSharedData();
+      return sharedDataService;
+    }
   }
 }
