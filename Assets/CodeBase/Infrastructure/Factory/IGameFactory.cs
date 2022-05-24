@@ -25,5 +25,6 @@ namespace CodeBase.Infrastructure.Factory
     FirstTower CreateFirstTower(Vector3 at);
     SecondTower CreateSecondTower(Vector3 at);
     GameObject CreateHud();
+    ObstacleCourse CreateObstacleCourse(int selectedFloor, float height);
   }
 }

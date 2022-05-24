@@ -64,7 +64,7 @@ namespace CodeBase.Infrastructure.Factory
     public FirstTower CreateFirstTower(Vector3 at)
     {
       _firstTower = _assets.Instantiate(AssetPath.FirstTowerPath, at).GetComponent<FirstTower>();
-      _firstTower.Construct(_sharedDataService);
+      _firstTower.Construct(this, _sharedDataService);
       return _firstTower;
     }
 
@@ -77,7 +77,7 @@ namespace CodeBase.Infrastructure.Factory
 
     public Room CreateFirstRoom(Transform parent)=> 
       _assets.Instantiate(AssetPath.FirstRoomPath, parent).GetComponent<Room>();
-    
+
     public Room CreateSecondRoom(Transform parent)=> 
       _assets.Instantiate(AssetPath.SecondRoomPath, parent).GetComponent<Room>();
 
@@ -86,6 +86,13 @@ namespace CodeBase.Infrastructure.Factory
       Elevator elevator = _assets.Instantiate(AssetPath.ElevatorPath, at).GetComponent<Elevator>();
       elevator.Construct(_firstTower, _hero, _sharedDataService.SharedData.ElevatorData);
       return elevator;
+    }
+
+    public ObstacleCourse CreateObstacleCourse(int selectedFloor, float height)
+    {
+      Vector3 at = Vector3.Lerp(_firstTower.transform.position, _secondTower.transform.position, 0.5f);
+      at.y = height;
+      return _assets.Instantiate(AssetPath.ObstacleCoursePath, at).GetComponent<ObstacleCourse>();
     }
 
     private GameObject InstantiateRegistered(string prefabPath, Vector3 at)

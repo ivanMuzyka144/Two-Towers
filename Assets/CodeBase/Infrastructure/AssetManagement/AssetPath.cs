@@ -9,5 +9,6 @@ namespace CodeBase.Infrastructure.AssetManagement
     public const string SecondTowerPath = "Tower/SecondTower";
     public const string HudPath = "Hud/HUD";
     public const string HeroPath = "Player/Hero";
+    public const string ObstacleCoursePath = "Obstacle/ObstacleCourse";
   }
 }
