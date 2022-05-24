@@ -1,5 +1,7 @@
 using System;
+using CodeBase.Data;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace CodeBase.Logic.PlayerLogic
 {
@@ -35,6 +37,17 @@ namespace CodeBase.Logic.PlayerLogic
     {
       if(hit.collider.gameObject.TryGetComponent(out ISelectable selectable))
         selectable.Select();
+    }
+
+    public ShootRaycastResult GetRaycastHit()
+    {
+      Ray ray = _camera.ViewportPointToRay(_rayOrigin);
+      RaycastHit hit;
+
+      if (Physics.Raycast(ray, out hit))
+        return new ShootRaycastResult(hit.point, hit.transform);
+      
+      return null;
     }
   }
 }
