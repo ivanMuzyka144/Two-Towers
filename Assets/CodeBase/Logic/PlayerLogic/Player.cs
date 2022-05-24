@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace CodeBase.Logic.PlayerLogic
 {
@@ -6,13 +7,15 @@ namespace CodeBase.Logic.PlayerLogic
   {
     [SerializeField] private PlayerMover _mover;
     [SerializeField] private PlayerRaycaster _raycaster;
-    
+    [SerializeField] private CameraRotator _cameraRotator;
+
     [SerializeField] private Transform _cameraPositionPoint;
 
     private Camera _camera;
     public void Construct(Camera cam)
     {
-      _mover.Construct(cam);
+      _mover.Construct();
+      _cameraRotator.Construct(cam);
       _raycaster.Construct(cam);
       SetupCamera(cam);
     }

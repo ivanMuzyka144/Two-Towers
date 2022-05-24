@@ -1,4 +1,3 @@
-
 using UnityEngine;
 
 namespace CodeBase.Logic.PlayerLogic
@@ -7,86 +6,56 @@ namespace CodeBase.Logic.PlayerLogic
 
     public class PlayerMover : MonoBehaviour
     {
-        private const string VerticalAxisName = "Vertical";
-        private const string HorizontalAxisName = "Horizontal";
-        
-        [SerializeField] private CharacterController _characterController;
+        [SerializeField] private CharacterController characterController;
     
-        [Space(10)]
-        [Header("Mover params")]
-        [SerializeField] private float _walkingSpeed = 7.5f;
-        [SerializeField] private float _runningSpeed = 11.5f;
-        [SerializeField] private float _jumpSpeed = 8.0f;
-        [SerializeField] private float _gravity = 20.0f;
-        [SerializeField] private float _lookSpeed = 2.0f;
-        [SerializeField] private float _lookXLimit = 45.0f;
+        private float _walkingSpeed = 7.5f;
+        private float _runningSpeed = 11.5f;
+        private float _jumpSpeed = 8.0f;
+        private float _gravity = 20.0f;
 
-        private float _rotationX = 0;
+        private Vector3 _moveDirection;
 
-        private Camera _playerCamera;
         private bool _setuped;
-
-        public void Construct(Camera cam)
+        
+        public void Construct()
         {
-            _playerCamera = cam;// TODO: add player speed from static data,, Input service
             _setuped = true;
         }
-
-        void Start()
-        {
-            Cursor.lockState = CursorLockMode.Locked; // TODO: Cursor service
-            Cursor.visible = false;
-        }
-
         void Update()
         {
-            if (_setuped)
-            {
-                Vector3 moveDirection = SetupMoveDirection();
-                moveDirection = ProcessJumping(moveDirection);
-                _characterController.Move(moveDirection * Time.deltaTime);
-                RotatePerson();
-            }
+            if(_setuped)
+                MovePlayer();
         }
 
-        private Vector3 SetupMoveDirection()
+        private void MovePlayer()
         {
-            Vector3 forward = transform.TransformDirection(Vector3.forward);
-            Vector3 right = transform.TransformDirection(Vector3.right);
-
-            bool isRunning = Input.GetKey(KeyCode.LeftShift);
-
-            float curSpeedX = (isRunning ? _runningSpeed : _walkingSpeed) * Input.GetAxis(VerticalAxisName);
-            float curSpeedY = (isRunning ? _runningSpeed : _walkingSpeed) * Input.GetAxis(HorizontalAxisName);
-            return (forward * curSpeedX) + (right * curSpeedY);
+            Vector3 prevMoveVector = _moveDirection;
+            SetupMovementDirection();
+            PerformJump(prevMoveVector.y);
+            ApplyGravity();
+            characterController.Move(_moveDirection * Time.deltaTime);
         }
 
-        private Vector3 ProcessJumping(Vector3 moveDirection)
+        private void SetupMovementDirection()
         {
-            float movementDirectionY = moveDirection.y;
-        
-            if (Input.GetButton("Jump") && _characterController.isGrounded)
-            {
-                moveDirection.y = _jumpSpeed;
-            }
-            else
-            {
-                moveDirection.y = movementDirectionY;
-            }
-
-            if (!_characterController.isGrounded)
-            {
-                moveDirection.y -= _gravity * Time.deltaTime;
-            }
-            return moveDirection;
+            float curSpeedX = GetSpeed() * Input.GetAxis("Vertical");
+            float curSpeedY = GetSpeed() * Input.GetAxis("Horizontal");
+            _moveDirection = (transform.forward * curSpeedX) + (transform.right * curSpeedY);
         }
 
-        private void RotatePerson()
+        private float GetSpeed() => 
+            Input.GetKey(KeyCode.LeftShift) ? _runningSpeed : _walkingSpeed;
+
+        private void PerformJump(float movementDirectionY) => 
+            _moveDirection.y = CanJump() ? _jumpSpeed : movementDirectionY;
+
+        private bool CanJump() => 
+            Input.GetButton("Jump") && characterController.isGrounded;
+
+        private void ApplyGravity()
         {
-            _rotationX += -Input.GetAxis("Mouse Y") * _lookSpeed;
-            _rotationX = Mathf.Clamp(_rotationX, -_lookXLimit, _lookXLimit);
-            _playerCamera.transform.localRotation = Quaternion.Euler(_rotationX, 0, 0);
-            transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * _lookSpeed, 0);
+            if (!characterController.isGrounded) 
+                _moveDirection.y -= _gravity * Time.deltaTime;
         }
     }
 }

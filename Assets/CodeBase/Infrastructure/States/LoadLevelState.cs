@@ -83,29 +83,42 @@ namespace CodeBase.Infrastructure.States
 
     private void InitFirstTower(Color[] generatedColors)
     {
-      GameObject firstTowerSpawnPoint = GameObject.Find("TowerSpawnPoint");
+      GameObject firstTowerSpawnPoint = GameObject.Find("FirstTowerSpawnPoint");
       int howManyFloors = 4;//static data
 
-      Tower tower = _factory.CreateTower(firstTowerSpawnPoint.transform.position);
+      FirstTower firstTower = _factory.CreateFirstTower(firstTowerSpawnPoint.transform.position);
 
       for (int i = 0; i < howManyFloors; i++) 
-        InitRoom(tower, generatedColors[i], i == 0);
+        InitFirstTowerRoom(firstTower, generatedColors[i], i == 0);
 
-      tower.SetupRooms();
+      firstTower.SetupRooms();
       
-      Elevator elevator = _factory.CreateElevator(tower.transform.position);
-      
-      tower.SetupElevator(elevator);
+      Elevator elevator = _factory.CreateElevator(firstTower.transform.position);
+      firstTower.SetupElevator(elevator);
     }
 
     private void InitSecondTower(Color[] generatedColors)
     {
+      GameObject secondTowerSpawnPoint = GameObject.Find("SecondTowerSpawnPoint");
+      int howManyFloors = 4;//static data
+
+      SecondTower secondTower = _factory.CreateSecondTower(secondTowerSpawnPoint.transform.position);
+
+      for (int i = 0; i < howManyFloors; i++) 
+        InitSecondTowerRoom(secondTower, generatedColors[i], i == 0);
       
+      secondTower.SetupRooms();
     }
 
-    private void InitRoom(Tower tower, Color colors, bool isFirst)
+    private void InitFirstTowerRoom(FirstTower tower, Color colors, bool isFirst)
     {
-      Room room = _factory.CreateRoom(tower.transform);
+      Room room = _factory.CreateFirstRoom(tower.transform);
+      room.Construct(isFirst, colors);
+      tower.AddRoom(room);
+    }
+    private void InitSecondTowerRoom(SecondTower tower, Color colors, bool isFirst)
+    {
+      Room room = _factory.CreateSecondRoom(tower.transform);
       room.Construct(isFirst, colors);
       tower.AddRoom(room);
     }

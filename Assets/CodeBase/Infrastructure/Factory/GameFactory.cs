@@ -14,7 +14,8 @@ namespace CodeBase.Infrastructure.Factory
     public List<ISavedProgressReader> ProgressReaders { get; } = new List<ISavedProgressReader>();
     public List<ISavedProgress> ProgressWriters { get; } = new List<ISavedProgress>();
     public GameObject Hud => _hud;
-    public Tower Tower => _tower;
+    public FirstTower FirstTower => _firstTower;
+    public SecondTower SecondTower => _secondTower;
     public Player Hero => _hero;
 
     private readonly IAssetProvider _assets;
@@ -22,9 +23,10 @@ namespace CodeBase.Infrastructure.Factory
     private readonly ISharedDataService _sharedDataService;
     
     private GameObject _hud;
-    private Tower _tower;
     private Player _hero;
-    
+    private FirstTower _firstTower;
+    private SecondTower _secondTower;
+
     public GameFactory(IAssetProvider assets, IPersistentProgressService persistentProgressService, ISharedDataService sharedDataService)
     {
       _assets = assets;
@@ -59,20 +61,30 @@ namespace CodeBase.Infrastructure.Factory
       return _hud;
     }
 
-    public Tower CreateTower(Vector3 at)
+    public FirstTower CreateFirstTower(Vector3 at)
     {
-      _tower = _assets.Instantiate(AssetPath.TowerPath, at).GetComponent<Tower>();
-      _tower.Construct(_sharedDataService);
-      return _tower;
+      _firstTower = _assets.Instantiate(AssetPath.FirstTowerPath, at).GetComponent<FirstTower>();
+      _firstTower.Construct(_sharedDataService);
+      return _firstTower;
     }
 
-    public Room CreateRoom(Transform parent)=> 
-      _assets.Instantiate(AssetPath.RoomPath, parent).GetComponent<Room>();
+    public SecondTower CreateSecondTower(Vector3 at)
+    {
+      _secondTower = _assets.Instantiate(AssetPath.SecondTowerPath, at).GetComponent<SecondTower>();
+      _secondTower.Construct(_sharedDataService);
+      return _secondTower;
+    }
+
+    public Room CreateFirstRoom(Transform parent)=> 
+      _assets.Instantiate(AssetPath.FirstRoomPath, parent).GetComponent<Room>();
+    
+    public Room CreateSecondRoom(Transform parent)=> 
+      _assets.Instantiate(AssetPath.SecondRoomPath, parent).GetComponent<Room>();
 
     public Elevator CreateElevator(Vector3 at)
     {
       Elevator elevator = _assets.Instantiate(AssetPath.ElevatorPath, at).GetComponent<Elevator>();
-      elevator.Construct(_tower, _hero, _sharedDataService.SharedData.ElevatorData);
+      elevator.Construct(_firstTower, _hero, _sharedDataService.SharedData.ElevatorData);
       return elevator;
     }
 

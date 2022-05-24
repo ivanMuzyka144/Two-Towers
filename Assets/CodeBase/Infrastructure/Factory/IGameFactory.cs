@@ -14,15 +14,16 @@ namespace CodeBase.Infrastructure.Factory
     List<ISavedProgressReader> ProgressReaders { get; }
     List<ISavedProgress> ProgressWriters { get; }
     GameObject Hud { get; }
-    Tower Tower { get; }
+    FirstTower FirstTower { get; }
+    SecondTower SecondTower { get; }
     Player Hero { get; }
     void Cleanup();
     Elevator CreateElevator(Vector3 at);
-    Room CreateRoom(Transform parent);
-    Tower CreateTower(Vector3 at);
-    GameObject CreateHud();
-    
+    Room CreateFirstRoom(Transform parent);
+    Room CreateSecondRoom(Transform parent);
     Player CreateHero(Vector3 at, Quaternion rotation);
-
+    FirstTower CreateFirstTower(Vector3 at);
+    SecondTower CreateSecondTower(Vector3 at);
+    GameObject CreateHud();
   }
 }

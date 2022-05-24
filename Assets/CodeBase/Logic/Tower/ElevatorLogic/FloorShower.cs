@@ -7,7 +7,7 @@ namespace CodeBase.Logic.Tower.ElevatorLogic
 {
     public class FloorShower : MonoBehaviour
     {
-        [SerializeField] private TextMeshPro _floorText;
+        [SerializeField] private TextMeshProUGUI _floorText;
         [SerializeField] private float _tickTime = 0.75f;
         public void ShowFloorAnim(int selectedFloor, Action onCompleted)
         {

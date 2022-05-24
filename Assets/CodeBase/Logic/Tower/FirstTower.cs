@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace CodeBase.Logic.Tower
 {
-    public class Tower : MonoBehaviour
+    public class FirstTower : MonoBehaviour
     {
         private List<Room> _rooms = new List<Room>();
         private Elevator _elevator;
@@ -47,6 +47,8 @@ namespace CodeBase.Logic.Tower
         {
             //spawn barier
             int selectedFloor = _sharedData.SharedData.ElevatorData.SelectedFloor;
+            Room selectedRoom = _rooms[selectedFloor];
+            selectedRoom.RoomPresenter.SetupSelectedRoom();
             _elevator.MoveElevator(selectedFloor, GetPositionOfFloor(selectedFloor), OnElevatorAppear);
         }
 

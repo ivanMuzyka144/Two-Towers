@@ -26,6 +26,7 @@ public class Door : MonoBehaviour
   {
       _leftDoor.DOMove(_leftDoorStartPoint.position, _openCloseTime);
       _rightDoor.DOMove(_rightDoorStartPoint.position, _openCloseTime);
+      Debug.Log("CLOSEE");
   }
   
   

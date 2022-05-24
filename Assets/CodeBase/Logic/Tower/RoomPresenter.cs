@@ -12,6 +12,8 @@ namespace CodeBase.Logic.Tower
     [SerializeField] private GameObject _doorFrontWall;
     [SerializeField] private GameObject _regularBackWall;
     [SerializeField] private GameObject _doorBackWall;
+    [Space(10)] 
+    [SerializeField] private GameObject _balconyWall;
     public void SetupColor(Color color)
     {
       foreach (MeshRenderer meshRenderer in _renderers) 
@@ -31,16 +33,34 @@ namespace CodeBase.Logic.Tower
     {
       _regularFrontWall.SetActive(!isFirst);
       _doorFrontWall.SetActive(isFirst);
-      _regularBackWall.SetActive(false);
-      _doorBackWall.SetActive(true);
+      _regularBackWall.SetActive(true);
+      _doorBackWall.SetActive(false);
     }
 
     private void SetupSecondTowerRoom()
     {
-      _regularFrontWall.SetActive(false);
-      _doorFrontWall.SetActive(true);
+      _regularFrontWall.SetActive(true);
+      _doorFrontWall.SetActive(false);
       _regularBackWall.SetActive(true);
       _doorBackWall.SetActive(false);
     }
+
+    public void SetupSelectedRoom()
+    {
+      if (_roomType == ERoomType.FirstTowerRoom)
+      {
+        _regularBackWall.SetActive(false);
+        _doorBackWall.SetActive(true);
+        _balconyWall.SetActive(true);  
+      }
+      else if (_roomType == ERoomType.SecondTowerRoom)
+      {
+        _regularFrontWall.SetActive(false);
+        _doorFrontWall.SetActive(true);
+        _balconyWall.SetActive(true);
+      }
+      
+    }
+    
   }
 }

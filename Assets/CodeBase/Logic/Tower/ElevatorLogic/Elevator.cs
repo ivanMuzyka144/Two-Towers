@@ -13,12 +13,12 @@ namespace CodeBase.Logic.Tower.ElevatorLogic
     [SerializeField] private FloorSelector _selector;
     [SerializeField] private FloorShower _shower;
     
-    private Tower _tower;
+    private FirstTower _firstTower;
     private Player _player;
     
-    public void Construct(Tower tower, Player player, ElevatorData elevatorData)
+    public void Construct(FirstTower firstTower, Player player, ElevatorData elevatorData)
     {
-      _tower = tower;
+      _firstTower = firstTower;
       _player = player;
       _selector.Construct(elevatorData);
     }
