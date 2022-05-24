@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using CodeBase.Infrastructure.AssetManagement;
 using CodeBase.Logic.PlayerLogic;
+using CodeBase.Logic.Shoot;
 using CodeBase.Logic.Tower;
 using CodeBase.Logic.Tower.ElevatorLogic;
 using CodeBase.Services.PersistentProgress;
@@ -71,7 +72,7 @@ namespace CodeBase.Infrastructure.Factory
     public SecondTower CreateSecondTower(Vector3 at)
     {
       _secondTower = _assets.Instantiate(AssetPath.SecondTowerPath, at).GetComponent<SecondTower>();
-      _secondTower.Construct(_sharedDataService);
+      _secondTower.Construct(_sharedDataService, this);
       return _secondTower;
     }
 
@@ -93,6 +94,16 @@ namespace CodeBase.Infrastructure.Factory
       Vector3 at = Vector3.Lerp(_firstTower.transform.position, _secondTower.transform.position, 0.5f);
       at.y = height;
       return _assets.Instantiate(AssetPath.ObstacleCoursePath, at).GetComponent<ObstacleCourse>();
+    }
+
+    public Bullet CreateBullet(Vector3 at, Quaternion rotation) => 
+      _assets.Instantiate(AssetPath.BulletPath, at, rotation).GetComponent<Bullet>();
+
+    public AimLevel CreateAimLevel(Vector3 at, Quaternion rotation)
+    {
+      AimLevel aimLevel = _assets.Instantiate(AssetPath.AimLevelPath, at, rotation).GetComponent<AimLevel>();
+      aimLevel.Construct(this, _hero);
+      return aimLevel;
     }
 
     private GameObject InstantiateRegistered(string prefabPath, Vector3 at)

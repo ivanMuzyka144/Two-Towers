@@ -10,5 +10,7 @@ namespace CodeBase.Infrastructure.AssetManagement
     public const string HudPath = "Hud/HUD";
     public const string HeroPath = "Player/Hero";
     public const string ObstacleCoursePath = "Obstacle/ObstacleCourse";
+    public const string BulletPath = "Weapon/Bullet";
+    public const string AimLevelPath = "AimLevels/AimLevel";
   }
 }

@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace CodeBase.Logic.Tower
 {
-    public class OpenCloseElevatorTrigger : MonoBehaviour
+    public class OpenCloseDoorTrigger : MonoBehaviour
     {
         [SerializeField] private Door _door;
         [SerializeField] private bool _shouldOpen;

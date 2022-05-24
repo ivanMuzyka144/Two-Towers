@@ -31,6 +31,37 @@ Transform:
   m_Father: {fileID: 8435642006786164570}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &5572668762954447041
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4226245357684707818}
+  m_Layer: 0
+  m_Name: weaponPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 2974397684917235467, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4226245357684707818
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5572668762954447041}
+  m_LocalRotation: {x: -0, y: -0.9917947, z: -0, w: -0.12784134}
+  m_LocalPosition: {x: 1.0540009, y: -0.1500001, z: 1.6080015}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8435642006786164570}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8012391250879095821
 GameObject:
   m_ObjectHideFlags: 0
@@ -133,6 +164,7 @@ GameObject:
   - component: {fileID: 8435642006786164647}
   - component: {fileID: 8081205083761799890}
   - component: {fileID: 2755636623909492794}
+  - component: {fileID: 5770761076097414658}
   m_Layer: 4
   m_Name: Hero
   m_TagString: Player
@@ -156,6 +188,7 @@ Transform:
   - {fileID: 8435642007789434577}
   - {fileID: 7711102448069798264}
   - {fileID: 2945976679837103405}
+  - {fileID: 4226245357684707818}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 194.69, z: 0}
@@ -272,6 +305,7 @@ MonoBehaviour:
   _mover: {fileID: 8081205083761799890}
   _raycaster: {fileID: 8435642006786164647}
   _cameraRotator: {fileID: 8435642006786164645}
+  _weaponModelHolder: {fileID: 5770761076097414658}
   _cameraPositionPoint: {fileID: 8435642008353267628}
 --- !u!114 &8435642006786164645
 MonoBehaviour:
@@ -325,9 +359,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _raycaster: {fileID: 8435642006786164647}
-  _firePoint: {fileID: 2945976679837103405}
-  _bulletPrefab: {fileID: 400667431751426887, guid: ad6fcbc6fe57f4eda82485f0b6c31bae, type: 3}
-  bulletSpeed: 50
+--- !u!114 &5770761076097414658
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8435642006786164575}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60892b5560ea741be8631ea07ed751b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _weaponModelHolder: {fileID: 4226245357684707818}
 --- !u!1 &8435642007789434582
 GameObject:
   m_ObjectHideFlags: 0

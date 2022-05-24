@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using CodeBase.Data;
+using CodeBase.Logic.Shoot;
+using CodeBase.Services.Input;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -9,49 +11,32 @@ namespace CodeBase.Logic.PlayerLogic
     public class ShootPerformer : MonoBehaviour
     {
         [SerializeField] private PlayerRaycaster _raycaster;
-        [SerializeField] private Transform _firePoint;
-        [SerializeField] private Transform _bulletPrefab;
-        [SerializeField] private float bulletSpeed;
 
-        private List<Vector3> points = new List<Vector3>();
+        private Weapon _weapon;
+
+        public void Construct(IInputService inputService)
+        {
+            
+        }
+
+        public void SetupWeapon(Weapon weapon) => 
+            _weapon = weapon;
+
         void Update()
         {
-            if (Input.GetKeyDown(KeyCode.Mouse1))
-            {
+            if (CanShoot()) 
                 PerformShooting();
-            }
         }
+
+        private bool CanShoot() => 
+            Input.GetKeyDown(KeyCode.Mouse1) && _weapon != null;
 
         private void PerformShooting()
         {
             ShootRaycastResult shootRaycastResult = _raycaster.GetRaycastHit();
-
-            if (shootRaycastResult != null)
-                ShootInTarger(shootRaycastResult.HitPoint);
-            else
-                ShootWithoutTarget();
+            _weapon.PerformShoot(shootRaycastResult);
         }
 
-        private void ShootInTarger(Vector3 targerPoint)
-        {
-            Vector3 direction = (targerPoint - _firePoint.position).normalized;
-            Rigidbody bulletClone =  Instantiate(_bulletPrefab, _firePoint.position, _firePoint.rotation).GetComponent<Rigidbody>();
-            bulletClone.velocity = direction  * bulletSpeed;
-        }
-
-        private void ShootWithoutTarget()
-        {
-            Rigidbody bulletClone =  Instantiate(_bulletPrefab, _firePoint.position, _firePoint.rotation).GetComponent<Rigidbody>();
-            bulletClone.velocity = Camera.main.transform.forward  * bulletSpeed;
-        }
-
-        private void OnDrawGizmos()
-        {
-            foreach (Vector3 point in points)
-            {
-                Gizmos.color = Color.red;
-                Gizmos.DrawSphere(point,1);
-            }
-        }
+        
     }
 }

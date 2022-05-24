@@ -8,6 +8,7 @@ namespace CodeBase.Logic.PlayerLogic
     [SerializeField] private PlayerMover _mover;
     [SerializeField] private PlayerRaycaster _raycaster;
     [SerializeField] private CameraRotator _cameraRotator;
+    [SerializeField] private WeaponModelHolder _weaponModelHolder;
 
     [SerializeField] private Transform _cameraPositionPoint;
 
@@ -17,6 +18,7 @@ namespace CodeBase.Logic.PlayerLogic
       _mover.Construct();
       _cameraRotator.Construct(cam);
       _raycaster.Construct(cam);
+      _weaponModelHolder.Construct(cam);
       SetupCamera(cam);
     }
 

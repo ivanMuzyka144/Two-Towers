@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using CodeBase.Logic.PlayerLogic;
+using CodeBase.Logic.Shoot;
 using CodeBase.Logic.Tower;
 using CodeBase.Logic.Tower.ElevatorLogic;
 using CodeBase.Services;
@@ -26,5 +27,7 @@ namespace CodeBase.Infrastructure.Factory
     SecondTower CreateSecondTower(Vector3 at);
     GameObject CreateHud();
     ObstacleCourse CreateObstacleCourse(int selectedFloor, float height);
+    Bullet CreateBullet(Vector3 at, Quaternion rotation);
+    AimLevel CreateAimLevel(Vector3 at, Quaternion rotation);
   }
 }

@@ -16,6 +16,13 @@ public class Door : MonoBehaviour
   [Space(10)] 
   [SerializeField] private float _openCloseTime = 1;
 
+  [Space(10)] [SerializeField] private bool _shouldOpenInStart;
+  private void Start()
+  {
+    if(_shouldOpenInStart)
+      OpenDoor();
+  }
+
   public void OpenDoor()
   {
       _leftDoor.DOMove(_leftDoorFinishPoint.position, _openCloseTime);
