@@ -8,6 +8,8 @@ using CodeBase.Services.PersistentProgress;
 using CodeBase.Services.SaveLoad;
 using CodeBase.Services.SharedData;
 using CodeBase.Services.StaticData;
+using CodeBase.UI.Factory;
+using CodeBase.UI.Services;
 
 namespace CodeBase.Infrastructure.States
 {
@@ -16,15 +18,20 @@ namespace CodeBase.Infrastructure.States
     private Dictionary<Type, IExitableState> _states;
     private IExitableState _activeState;
 
-    public GameStateMachine(SceneLoader sceneLoader, AllServices services)
+    public GameStateMachine(SceneLoader sceneLoader, AllServices services, ICoroutineRunner coroutineRunner)
     {
       _states = new Dictionary<Type, IExitableState>
       {
         [typeof(BootstrapState)] = new BootstrapState(this, sceneLoader, services),
         [typeof(LoadLevelState)] = new LoadLevelState(this, sceneLoader, services.Single<IGameFactory>(), 
-          services.Single<IPersistentProgressService>(), services.Single<ISharedDataService>(), services.Single<IStaticDataService>()),
+          services.Single<IPersistentProgressService>(), services.Single<ISharedDataService>(), services.Single<IStaticDataService>(), services.Single<IUiFactory>()),
         [typeof(LoadProgressState)] = new LoadProgressState(this, services.Single<IPersistentProgressService>(), services.Single<ISaveLoadService>()),
-        [typeof(GameLoopState)] = new GameLoopState(this, services.Single<ICursorService>()),
+        [typeof(GameLoopState)] = new GameLoopState(this, 
+          services.Single<ICursorService>(), 
+          services.Single<IGameFactory>(), 
+          coroutineRunner, 
+          services.Single<IWindowService>()),
+        [typeof(DisposableState)] = new DisposableState(this, services, sceneLoader),
       };
     }
     

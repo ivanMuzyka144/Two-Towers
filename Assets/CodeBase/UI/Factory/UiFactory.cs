@@ -16,13 +16,11 @@ namespace CodeBase.UI.Factory
     private readonly IStaticDataService _staticData;
 
     private Transform _uiRoot;
-    private readonly IPersistentProgressService _progressService;
 
-    public UiFactory(IAssetProvider assets, IStaticDataService staticData, IPersistentProgressService progressService)
+    public UiFactory(IAssetProvider assets, IStaticDataService staticData)
     {
       _assets = assets;
       _staticData = staticData;
-      _progressService = progressService;
     }
     
     public void CreateUIRoot()
@@ -33,12 +31,6 @@ namespace CodeBase.UI.Factory
     public WindowBase CreateLevelCompletedWindow()
     {
       WindowConfig config = _staticData.ForWindow(WindowId.LevelCompleted);
-      return Object.Instantiate(config.Prefab, _uiRoot).GetComponent<WindowBase>();
-    }
-
-    public WindowBase CreateGameOverWindow()
-    {
-      WindowConfig config = _staticData.ForWindow(WindowId.GameOver);
       return Object.Instantiate(config.Prefab, _uiRoot).GetComponent<WindowBase>();
     }
   }

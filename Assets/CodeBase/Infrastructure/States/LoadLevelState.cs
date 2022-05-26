@@ -9,6 +9,7 @@ using CodeBase.Services.PersistentProgress;
 using CodeBase.Services.SharedData;
 using CodeBase.Services.StaticData;
 using CodeBase.StaticData;
+using CodeBase.UI.Factory;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -25,13 +26,15 @@ namespace CodeBase.Infrastructure.States
     private readonly IPersistentProgressService _progressService;
     private readonly ISharedDataService _sharedDataService;
     private readonly IStaticDataService _staticDataService;
+    private readonly IUiFactory _uiFactory;
 
     public LoadLevelState(GameStateMachine gameStateMachine, 
       SceneLoader sceneLoader, 
       IGameFactory factory, 
       IPersistentProgressService progressService,
       ISharedDataService sharedDataService,
-      IStaticDataService staticDataService)
+      IStaticDataService staticDataService,
+      IUiFactory uiFactory)
     {
       _stateMachine = gameStateMachine;
       _sceneLoader = sceneLoader;
@@ -39,6 +42,7 @@ namespace CodeBase.Infrastructure.States
       _progressService = progressService;
       _sharedDataService = sharedDataService;
       _staticDataService = staticDataService;
+      _uiFactory = uiFactory;
     }
 
     public void Enter(string sceneName)
@@ -52,23 +56,20 @@ namespace CodeBase.Infrastructure.States
     private void OnLoaded()
     {
       InitGameWorld();
-      InformProgressReaders();
 
       _stateMachine.Enter<GameLoopState>();
     }
 
-    private void InformProgressReaders()
-    {
-      foreach (ISavedProgressReader progressReader in _factory.ProgressReaders)
-        progressReader.LoadProgress(_progressService.Progress);
-    }
-
     private void InitGameWorld()
     {
+      InitUIRoot();
       InitHero();
       InitHud();
       InitTowers();
     }
+
+    private void InitUIRoot() => 
+      _uiFactory.CreateUIRoot();
 
     private void InitHero()
     {

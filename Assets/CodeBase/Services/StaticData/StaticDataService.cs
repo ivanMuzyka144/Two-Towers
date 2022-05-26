@@ -33,12 +33,12 @@ namespace CodeBase.Services.StaticData
     private SpawnPoint _secondTowerSpawnPoint;
     public void Load()
     {
-      /*
+      
       _windowConfigs = Resources
         .Load<WindowStaticData>(WindowsDataPath)
         .Configs
         .ToDictionary(x => x.WindowId, x => x);
-      */
+      
       _obstacleCoursePrefabs = Resources
         .Load<ObstacleCourseData>(ObstacleCourseDataPath)
         .ObstacleCoursePrefabs

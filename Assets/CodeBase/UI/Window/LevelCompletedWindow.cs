@@ -8,26 +8,13 @@ namespace CodeBase.UI
 {
    public class LevelCompletedWindow : WindowBase
    {
-      [SerializeField] private TextMeshProUGUI _scoreValueText;
-      [SerializeField] private TextMeshProUGUI _ammoValueText;
-      [SerializeField] private Button _nextButton;
       [SerializeField] private Button _restartButton;
       
-      public void Construct(Action nextButtonAction, Action restartAction)
-      {
-         _nextButton.onClick.AddListener(nextButtonAction.Invoke);
+      public void Construct(Action restartAction) => 
          _restartButton.onClick.AddListener(restartAction.Invoke);
-      }
 
-      public void PlayLevelCompleteSequence()
-      {
-         
-      }
 
-      private void OnDestroy()
-      {
-         _nextButton.onClick.RemoveAllListeners();
+      private void OnDestroy() => 
          _restartButton.onClick.RemoveAllListeners();
-      }
    }
 }

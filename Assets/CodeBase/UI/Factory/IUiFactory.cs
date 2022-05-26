@@ -7,6 +7,5 @@ namespace CodeBase.UI.Factory
   {
     void CreateUIRoot();
     WindowBase CreateLevelCompletedWindow();
-    WindowBase CreateGameOverWindow();
   }
 }

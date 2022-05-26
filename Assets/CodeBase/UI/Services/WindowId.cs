@@ -4,6 +4,5 @@ namespace CodeBase.UI.Services
   {
     Unknown = 0,
     LevelCompleted = 1,
-    GameOver = 2,
   }
 }

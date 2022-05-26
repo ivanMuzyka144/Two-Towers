@@ -15,5 +15,6 @@ namespace CodeBase.Infrastructure
 
       DontDestroyOnLoad(this);
     }
+
   }
 }

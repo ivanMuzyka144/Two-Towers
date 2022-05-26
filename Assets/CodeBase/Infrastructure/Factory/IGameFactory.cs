@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using CodeBase.Logic.PlayerLogic;
 using CodeBase.Logic.Shoot;
@@ -11,12 +12,11 @@ namespace CodeBase.Infrastructure.Factory
 {
   public interface IGameFactory : IService
   {
-    List<ISavedProgressReader> ProgressReaders { get; }
-    List<ISavedProgress> ProgressWriters { get; }
     GameObject Hud { get; }
     FirstTower FirstTower { get; }
     SecondTower SecondTower { get; }
     Player Hero { get; }
+    event Action OnAimLevelCompleted;
     void Cleanup();
     Elevator CreateElevator(Vector3 at);
     Room CreateFirstRoom(Transform parent);

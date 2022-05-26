@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using CodeBase.Infrastructure.AssetManagement;
 using CodeBase.Logic.PlayerLogic;
@@ -11,14 +12,13 @@ using UnityEngine;
 
 namespace CodeBase.Infrastructure.Factory
 {
-  public class GameFactory : IGameFactory
+  public class GameFactory : IGameFactory, IDisposable
   {
-    public List<ISavedProgressReader> ProgressReaders { get; } = new List<ISavedProgressReader>();
-    public List<ISavedProgress> ProgressWriters { get; } = new List<ISavedProgress>();
     public GameObject Hud => _hud;
     public FirstTower FirstTower => _firstTower;
     public SecondTower SecondTower => _secondTower;
     public Player Hero => _hero;
+    public event Action OnAimLevelCompleted;
 
     private readonly IAssetProvider _assets;
     private readonly IPersistentProgressService _persistentProgressService;
@@ -30,8 +30,8 @@ namespace CodeBase.Infrastructure.Factory
     private FirstTower _firstTower;
     private SecondTower _secondTower;
 
-    public GameFactory(IAssetProvider assets, 
-      IPersistentProgressService persistentProgressService, 
+    public GameFactory(IAssetProvider assets,
+      IPersistentProgressService persistentProgressService,
       ISharedDataService sharedDataService,
       IStaticDataService staticDataService)
     {
@@ -41,18 +41,13 @@ namespace CodeBase.Infrastructure.Factory
       _staticDataService = staticDataService;
     }
 
-    public void Register(ISavedProgressReader progressReader)
-    {
-      if (progressReader is ISavedProgress progressWriter)
-        ProgressWriters.Add(progressWriter);
-
-      ProgressReaders.Add(progressReader);
-    }
-
     public void Cleanup()
     {
-      ProgressReaders.Clear();
-      ProgressWriters.Clear();
+      _hud = null;
+      _hero = null;
+      _firstTower = null;
+      _secondTower = null;
+      OnAimLevelCompleted = null;
     }
 
     public Player CreateHero(Vector3 at, Quaternion rotation)
@@ -83,10 +78,10 @@ namespace CodeBase.Infrastructure.Factory
       return _secondTower;
     }
 
-    public Room CreateFirstRoom(Transform parent)=> 
+    public Room CreateFirstRoom(Transform parent) =>
       _assets.Instantiate(AssetPath.FirstRoomPath, parent).GetComponent<Room>();
 
-    public Room CreateSecondRoom(Transform parent)=> 
+    public Room CreateSecondRoom(Transform parent) =>
       _assets.Instantiate(AssetPath.SecondRoomPath, parent).GetComponent<Room>();
 
     public Elevator CreateElevator(Vector3 at)
@@ -104,37 +99,19 @@ namespace CodeBase.Infrastructure.Factory
       return _assets.Instantiate(prefab.gameObject, at).GetComponent<ObstacleCourse>();
     }
 
-    public Bullet CreateBullet(Vector3 at, Quaternion rotation) => 
+    public Bullet CreateBullet(Vector3 at, Quaternion rotation) =>
       _assets.Instantiate(AssetPath.BulletPath, at, rotation).GetComponent<Bullet>();
 
-    public AimLevel CreateAimLevel(int selectedFloor ,Vector3 at, Quaternion rotation)
+    public AimLevel CreateAimLevel(int selectedFloor, Vector3 at, Quaternion rotation)
     {
       AimLevel prefab = _staticDataService.ForAimLevel(selectedFloor);
       AimLevel aimLevel = _assets.Instantiate(prefab.gameObject, at, rotation).GetComponent<AimLevel>();
       aimLevel.Construct(this, _hero);
+      aimLevel.OnAimLevelCompleted += () => OnAimLevelCompleted?.Invoke();
       return aimLevel;
     }
 
-    private GameObject InstantiateRegistered(string prefabPath, Vector3 at)
-    {
-      GameObject gameObject = _assets.Instantiate(path: prefabPath, at: at);
-      RegisterProgressWatchers(gameObject);
-
-      return gameObject;
-    }
-
-    private GameObject InstantiateRegistered(string prefabPath)
-    {
-      GameObject gameObject = _assets.Instantiate(path: prefabPath);
-      RegisterProgressWatchers(gameObject);
-
-      return gameObject;
-    }
-
-    private void RegisterProgressWatchers(GameObject gameObject)
-    {
-      foreach (ISavedProgressReader progressReader in gameObject.GetComponentsInChildren<ISavedProgressReader>())
-        Register(progressReader);
-    }
+    public void Dispose() => 
+      Cleanup();
   }
 }

@@ -22,8 +22,6 @@ namespace CodeBase.UI.Services
           break;
         case WindowId.LevelCompleted:
           return _uiFactory.CreateLevelCompletedWindow();
-        case WindowId.GameOver:
-          return _uiFactory.CreateGameOverWindow();
       }
       return null;
     }

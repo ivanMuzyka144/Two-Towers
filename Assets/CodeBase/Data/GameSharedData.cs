@@ -10,5 +10,11 @@ namespace CodeBase.Data
       PlayerData = new PlayerData();
       ElevatorData = new ElevatorData();
     }
+
+    public void Clear()
+    {
+      PlayerData = new PlayerData();
+      ElevatorData = new ElevatorData();
+    }
   }
 }
