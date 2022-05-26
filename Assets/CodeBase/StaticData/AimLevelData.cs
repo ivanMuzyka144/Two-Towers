@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace CodeBase.StaticData
 {
-  [CreateAssetMenu(menuName = "Static Data/Create Aim Level Data", fileName = "CreateAimLevelData")]
+  [CreateAssetMenu(menuName = "Static Data/Create Aim Level Data", fileName = "AimLevelData")]
   public class AimLevelData : ScriptableObject
   {
     public List<AimLevel> AimLevelPrefabs;

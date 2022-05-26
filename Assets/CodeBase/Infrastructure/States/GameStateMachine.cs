@@ -7,6 +7,7 @@ using CodeBase.Services.CursorService;
 using CodeBase.Services.PersistentProgress;
 using CodeBase.Services.SaveLoad;
 using CodeBase.Services.SharedData;
+using CodeBase.Services.StaticData;
 
 namespace CodeBase.Infrastructure.States
 {
@@ -21,7 +22,7 @@ namespace CodeBase.Infrastructure.States
       {
         [typeof(BootstrapState)] = new BootstrapState(this, sceneLoader, services),
         [typeof(LoadLevelState)] = new LoadLevelState(this, sceneLoader, services.Single<IGameFactory>(), 
-          services.Single<IPersistentProgressService>(), services.Single<ISharedDataService>()),
+          services.Single<IPersistentProgressService>(), services.Single<ISharedDataService>(), services.Single<IStaticDataService>()),
         [typeof(LoadProgressState)] = new LoadProgressState(this, services.Single<IPersistentProgressService>(), services.Single<ISaveLoadService>()),
         [typeof(GameLoopState)] = new GameLoopState(this, services.Single<ICursorService>()),
       };

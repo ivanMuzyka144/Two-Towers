@@ -7,6 +7,8 @@ using CodeBase.Logic.Tower;
 using CodeBase.Logic.Tower.ElevatorLogic;
 using CodeBase.Services.PersistentProgress;
 using CodeBase.Services.SharedData;
+using CodeBase.Services.StaticData;
+using CodeBase.StaticData;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -22,16 +24,21 @@ namespace CodeBase.Infrastructure.States
     private readonly IGameFactory _factory;
     private readonly IPersistentProgressService _progressService;
     private readonly ISharedDataService _sharedDataService;
+    private readonly IStaticDataService _staticDataService;
 
-    public LoadLevelState(GameStateMachine gameStateMachine, SceneLoader sceneLoader, 
-      IGameFactory factory, IPersistentProgressService progressService,
-      ISharedDataService sharedDataService)
+    public LoadLevelState(GameStateMachine gameStateMachine, 
+      SceneLoader sceneLoader, 
+      IGameFactory factory, 
+      IPersistentProgressService progressService,
+      ISharedDataService sharedDataService,
+      IStaticDataService staticDataService)
     {
       _stateMachine = gameStateMachine;
       _sceneLoader = sceneLoader;
       _factory = factory;
       _progressService = progressService;
       _sharedDataService = sharedDataService;
+      _staticDataService = staticDataService;
     }
 
     public void Enter(string sceneName)
@@ -65,8 +72,8 @@ namespace CodeBase.Infrastructure.States
 
     private void InitHero()
     {
-      GameObject heroSpawnPoint = GameObject.Find("HeroSpawnPoint");
-       _factory.CreateHero(heroSpawnPoint.transform.position, heroSpawnPoint.transform.rotation);
+      SpawnPoint spawnPoint = _staticDataService.PlayerSpawnPoint;
+       _factory.CreateHero(spawnPoint.Position, spawnPoint.Rotation);
     }
 
     private void InitHud() => 
@@ -83,10 +90,10 @@ namespace CodeBase.Infrastructure.States
 
     private void InitFirstTower(Color[] generatedColors)
     {
-      GameObject firstTowerSpawnPoint = GameObject.Find("FirstTowerSpawnPoint");
+      SpawnPoint firstTowerSpawnPoint = _staticDataService.FirstTowerSpawnPoint;
       int howManyFloors = 4;//static data
 
-      FirstTower firstTower = _factory.CreateFirstTower(firstTowerSpawnPoint.transform.position);
+      FirstTower firstTower = _factory.CreateFirstTower(firstTowerSpawnPoint.Position);
 
       for (int i = 0; i < howManyFloors; i++) 
         InitFirstTowerRoom(firstTower, generatedColors[i], i == 0);
@@ -99,10 +106,10 @@ namespace CodeBase.Infrastructure.States
 
     private void InitSecondTower(Color[] generatedColors)
     {
-      GameObject secondTowerSpawnPoint = GameObject.Find("SecondTowerSpawnPoint");
+      SpawnPoint secondTowerSpawnPoint = _staticDataService.SecondTowerSpawnPoint;
       int howManyFloors = 4;//static data
 
-      SecondTower secondTower = _factory.CreateSecondTower(secondTowerSpawnPoint.transform.position);
+      SecondTower secondTower = _factory.CreateSecondTower(secondTowerSpawnPoint.Position);
 
       for (int i = 0; i < howManyFloors; i++) 
         InitSecondTowerRoom(secondTower, generatedColors[i], i == 0);

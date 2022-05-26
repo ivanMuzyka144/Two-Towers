@@ -14,12 +14,20 @@ namespace CodeBase.Services.StaticData
   {
     private const string ObstacleCourseDataPath = "StaticData/ObstacleCourseData";
     private const string AimLevelDataPath = "StaticData/AimLevelData";
+    private const string SpawnPointDataPath = "StaticData/SpawnPointData";
     private const string WindowsDataPath = "StaticData/UI/WindowStaticData";
 
+    public SpawnPoint PlayerSpawnPoint => _playerSpawnPoint;
+    public SpawnPoint FirstTowerSpawnPoint => _firstTowerSpawnPoint;
+    public SpawnPoint SecondTowerSpawnPoint => _secondTowerSpawnPoint;
+    
     private Dictionary<int ,ObstacleCourse> _obstacleCoursePrefabs;
     private Dictionary<int,AimLevel> _aimLevelPrefabs;
     private Dictionary<WindowId,WindowConfig> _windowConfigs;
-    
+
+    private SpawnPoint _playerSpawnPoint;
+    private SpawnPoint _firstTowerSpawnPoint;
+    private SpawnPoint _secondTowerSpawnPoint;
     public void Load()
     {
       /*
@@ -37,6 +45,11 @@ namespace CodeBase.Services.StaticData
         .Load<AimLevelData>(AimLevelDataPath)
         .AimLevelPrefabs
         .ToDictionary(x => x.ID, x => x);
+
+      SpawnPointData spawnPointData = Resources.Load<SpawnPointData>(SpawnPointDataPath);
+      _playerSpawnPoint = spawnPointData.PlayerPoint;
+      _firstTowerSpawnPoint = spawnPointData.FirstTowerPoint;
+      _secondTowerSpawnPoint = spawnPointData.SecondTowerPoint;
     }
     public WindowConfig ForWindow(WindowId windowId) =>
       _windowConfigs.TryGetValue(windowId, out WindowConfig windowConfig)
