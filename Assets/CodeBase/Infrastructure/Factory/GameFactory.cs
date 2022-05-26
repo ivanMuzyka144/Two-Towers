@@ -72,14 +72,14 @@ namespace CodeBase.Infrastructure.Factory
     public FirstTower CreateFirstTower(Vector3 at)
     {
       _firstTower = _assets.Instantiate(AssetPath.FirstTowerPath, at).GetComponent<FirstTower>();
-      _firstTower.Construct(this, _sharedDataService);
+      _firstTower.Construct(this, _sharedDataService, _staticDataService);
       return _firstTower;
     }
 
     public SecondTower CreateSecondTower(Vector3 at)
     {
       _secondTower = _assets.Instantiate(AssetPath.SecondTowerPath, at).GetComponent<SecondTower>();
-      _secondTower.Construct(_sharedDataService, this);
+      _secondTower.Construct(_sharedDataService, this, _staticDataService);
       return _secondTower;
     }
 
@@ -92,7 +92,7 @@ namespace CodeBase.Infrastructure.Factory
     public Elevator CreateElevator(Vector3 at)
     {
       Elevator elevator = _assets.Instantiate(AssetPath.ElevatorPath, at).GetComponent<Elevator>();
-      elevator.Construct(_firstTower, _hero, _sharedDataService.SharedData.ElevatorData);
+      elevator.Construct(_firstTower, _hero, _sharedDataService.SharedData.ElevatorData, _staticDataService);
       return elevator;
     }
 

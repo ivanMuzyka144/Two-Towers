@@ -15,8 +15,10 @@ namespace CodeBase.Services.StaticData
     private const string ObstacleCourseDataPath = "StaticData/ObstacleCourseData";
     private const string AimLevelDataPath = "StaticData/AimLevelData";
     private const string SpawnPointDataPath = "StaticData/SpawnPointData";
+    private const string GameConfigPath = "StaticData/GameConfig";
     private const string WindowsDataPath = "StaticData/UI/WindowStaticData";
 
+    public GameConfig GameConfig => _gameConfig;
     public SpawnPoint PlayerSpawnPoint => _playerSpawnPoint;
     public SpawnPoint FirstTowerSpawnPoint => _firstTowerSpawnPoint;
     public SpawnPoint SecondTowerSpawnPoint => _secondTowerSpawnPoint;
@@ -25,6 +27,7 @@ namespace CodeBase.Services.StaticData
     private Dictionary<int,AimLevel> _aimLevelPrefabs;
     private Dictionary<WindowId,WindowConfig> _windowConfigs;
 
+    private GameConfig _gameConfig;
     private SpawnPoint _playerSpawnPoint;
     private SpawnPoint _firstTowerSpawnPoint;
     private SpawnPoint _secondTowerSpawnPoint;
@@ -50,6 +53,8 @@ namespace CodeBase.Services.StaticData
       _playerSpawnPoint = spawnPointData.PlayerPoint;
       _firstTowerSpawnPoint = spawnPointData.FirstTowerPoint;
       _secondTowerSpawnPoint = spawnPointData.SecondTowerPoint;
+
+      _gameConfig = (GameConfig)Resources.Load(GameConfigPath);
     }
     public WindowConfig ForWindow(WindowId windowId) =>
       _windowConfigs.TryGetValue(windowId, out WindowConfig windowConfig)
@@ -60,17 +65,13 @@ namespace CodeBase.Services.StaticData
     {
       int selectId = _obstacleCoursePrefabs.Keys.Contains(id) ? id : _obstacleCoursePrefabs.Keys.ToList().RandomItem();
       
-      return _obstacleCoursePrefabs.TryGetValue(selectId, out ObstacleCourse prefab)
-        ? prefab
-        : null;
+      return _obstacleCoursePrefabs.TryGetValue(selectId, out ObstacleCourse prefab) ? prefab : null;
     } 
     public AimLevel ForAimLevel(int id)
     {
       int selectId = _aimLevelPrefabs.Keys.Contains(id) ? id : _aimLevelPrefabs.Keys.ToList().RandomItem();
       
-      return _aimLevelPrefabs.TryGetValue(selectId, out AimLevel prefab)
-        ? prefab
-        : null;
+      return _aimLevelPrefabs.TryGetValue(selectId, out AimLevel prefab) ? prefab : null;
     }
   }
 }

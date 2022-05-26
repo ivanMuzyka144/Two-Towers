@@ -81,7 +81,7 @@ namespace CodeBase.Infrastructure.States
 
     private void InitTowers()
     {
-      int howManyFloors = 4;
+      int howManyFloors = _staticDataService.GameConfig.HowManyRooms;
       Color[] generatedColors = GetRandomColors(howManyFloors);
 
       InitFirstTower(generatedColors);
@@ -91,11 +91,11 @@ namespace CodeBase.Infrastructure.States
     private void InitFirstTower(Color[] generatedColors)
     {
       SpawnPoint firstTowerSpawnPoint = _staticDataService.FirstTowerSpawnPoint;
-      int howManyFloors = 4;//static data
+      int howManyRooms= _staticDataService.GameConfig.HowManyRooms;
 
       FirstTower firstTower = _factory.CreateFirstTower(firstTowerSpawnPoint.Position);
 
-      for (int i = 0; i < howManyFloors; i++) 
+      for (int i = 0; i < howManyRooms; i++) 
         InitFirstTowerRoom(firstTower, generatedColors[i], i == 0);
 
       firstTower.SetupRooms();
@@ -107,11 +107,11 @@ namespace CodeBase.Infrastructure.States
     private void InitSecondTower(Color[] generatedColors)
     {
       SpawnPoint secondTowerSpawnPoint = _staticDataService.SecondTowerSpawnPoint;
-      int howManyFloors = 4;//static data
+      int howManyRooms = _staticDataService.GameConfig.HowManyRooms;
 
       SecondTower secondTower = _factory.CreateSecondTower(secondTowerSpawnPoint.Position);
 
-      for (int i = 0; i < howManyFloors; i++) 
+      for (int i = 0; i < howManyRooms; i++) 
         InitSecondTowerRoom(secondTower, generatedColors[i], i == 0);
       
       secondTower.SetupRooms();

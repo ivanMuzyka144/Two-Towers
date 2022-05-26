@@ -1,8 +1,11 @@
 using System;
 using CodeBase.Data;
 using CodeBase.Services.SharedData;
+using CodeBase.Services.StaticData;
+using CodeBase.StaticData;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace CodeBase.Logic.Tower.ElevatorLogic
 {
@@ -14,13 +17,15 @@ namespace CodeBase.Logic.Tower.ElevatorLogic
     [SerializeField] private FloorSelectorNumberButton[] _numberButtons;
     [SerializeField] private FloorSelectorButton _clearButton;
     [SerializeField] private FloorSelectorButton _acceptButton;
-    
+
+    private IStaticDataService _staticDataService;
     private ElevatorData _elevatorData;
     private string _currString = "";
 
-    public void Construct(ElevatorData elevatorData)
+    public void Construct(ElevatorData elevatorData, IStaticDataService staticDataService)
     {
       _elevatorData = elevatorData;
+      _staticDataService = staticDataService;
       SubscribeToNumberButton();
       _clearButton.OnButtonClicked += ClearNumbs;
       _acceptButton.OnButtonClicked += AcceptNumbs;
@@ -51,7 +56,7 @@ namespace CodeBase.Logic.Tower.ElevatorLogic
 
     private void AppendNumb(int numb)
     {
-      if (_currString.Length >= 4)
+      if (_currString.Length >= _staticDataService.GameConfig.HowManyRooms)
       {
         if (_currString == ErrorName)
         {
@@ -85,7 +90,7 @@ namespace CodeBase.Logic.Tower.ElevatorLogic
 
       int currNumb = int.Parse(_currString);
       
-      if (currNumb >= 4)
+      if (currNumb >= _staticDataService.GameConfig.HowManyRooms)
       {
         _currString = ErrorName;
         _screenText.text = _currString;

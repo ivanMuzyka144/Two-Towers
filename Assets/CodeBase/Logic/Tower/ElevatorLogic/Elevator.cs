@@ -1,6 +1,7 @@
 using System;
 using CodeBase.Data;
 using CodeBase.Logic.PlayerLogic;
+using CodeBase.Services.StaticData;
 using UnityEngine;
 
 namespace CodeBase.Logic.Tower.ElevatorLogic
@@ -16,11 +17,11 @@ namespace CodeBase.Logic.Tower.ElevatorLogic
     private FirstTower _firstTower;
     private Player _player;
     
-    public void Construct(FirstTower firstTower, Player player, ElevatorData elevatorData)
+    public void Construct(FirstTower firstTower, Player player, ElevatorData elevatorData, IStaticDataService staticDataService)
     {
       _firstTower = firstTower;
       _player = player;
-      _selector.Construct(elevatorData);
+      _selector.Construct(elevatorData, staticDataService);
     }
 
     public void MoveElevator(int selectedFloor, Vector3 newPosition, Action onCompleted)

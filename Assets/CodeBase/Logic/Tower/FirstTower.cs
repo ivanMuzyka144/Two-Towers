@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using CodeBase.Infrastructure.Factory;
 using CodeBase.Logic.Tower.ElevatorLogic;
 using CodeBase.Services.SharedData;
+using CodeBase.Services.StaticData;
 using UnityEngine;
 
 namespace CodeBase.Logic.Tower
@@ -13,11 +14,13 @@ namespace CodeBase.Logic.Tower
         private Elevator _elevator;
         private ISharedDataService _sharedData;
         private IGameFactory _factory;
+        private IStaticDataService _staticDataService;
 
-        public void Construct(IGameFactory factory,ISharedDataService sharedData)
+        public void Construct(IGameFactory factory,ISharedDataService sharedData, IStaticDataService staticDataService)
         {
             _factory = factory;
             _sharedData = sharedData;
+            _staticDataService = staticDataService;
             _sharedData.SharedData.ElevatorData.FloorSelected += HandleFloorSelected;
         }
 
@@ -32,7 +35,7 @@ namespace CodeBase.Logic.Tower
         public void SetupRooms()
         {
             Vector3 startPos = transform.position;
-            float height = 5.5f;
+            float height = _staticDataService.GameConfig.RoomHeight;
             
             for (int i = 0; i < _rooms.Count; i++)
             {
