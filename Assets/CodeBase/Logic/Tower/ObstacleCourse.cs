@@ -1,18 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class ObstacleCourse : MonoBehaviour
+namespace CodeBase.Logic.Tower
 {
-    // Start is called before the first frame update
-    void Start()
+    public class ObstacleCourse : MonoBehaviour
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        [SerializeField] private int _obstacleCourseID;
+        public int ObstacleCourseID => _obstacleCourseID;
     }
 }

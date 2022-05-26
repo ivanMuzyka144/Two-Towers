@@ -6,6 +6,7 @@ using CodeBase.Logic.Tower;
 using CodeBase.Logic.Tower.ElevatorLogic;
 using CodeBase.Services.PersistentProgress;
 using CodeBase.Services.SharedData;
+using CodeBase.Services.StaticData;
 using UnityEngine;
 
 namespace CodeBase.Infrastructure.Factory
@@ -22,17 +23,22 @@ namespace CodeBase.Infrastructure.Factory
     private readonly IAssetProvider _assets;
     private readonly IPersistentProgressService _persistentProgressService;
     private readonly ISharedDataService _sharedDataService;
-    
+    private readonly IStaticDataService _staticDataService;
+
     private GameObject _hud;
     private Player _hero;
     private FirstTower _firstTower;
     private SecondTower _secondTower;
 
-    public GameFactory(IAssetProvider assets, IPersistentProgressService persistentProgressService, ISharedDataService sharedDataService)
+    public GameFactory(IAssetProvider assets, 
+      IPersistentProgressService persistentProgressService, 
+      ISharedDataService sharedDataService,
+      IStaticDataService staticDataService)
     {
       _assets = assets;
       _persistentProgressService = persistentProgressService;
       _sharedDataService = sharedDataService;
+      _staticDataService = staticDataService;
     }
 
     public void Register(ISavedProgressReader progressReader)
@@ -52,7 +58,8 @@ namespace CodeBase.Infrastructure.Factory
     public Player CreateHero(Vector3 at, Quaternion rotation)
     {
       _hero = _assets.Instantiate(AssetPath.HeroPath, at, rotation).GetComponent<Player>();
-      _hero.Construct(Camera.main); //TODO rework
+      _hero.Construct(Camera.main, _sharedDataService);
+      _sharedDataService.SharedData.PlayerData.SpawnPoint = at;
       return _hero;
     }
 
@@ -93,15 +100,17 @@ namespace CodeBase.Infrastructure.Factory
     {
       Vector3 at = Vector3.Lerp(_firstTower.transform.position, _secondTower.transform.position, 0.5f);
       at.y = height;
-      return _assets.Instantiate(AssetPath.ObstacleCoursePath, at).GetComponent<ObstacleCourse>();
+      ObstacleCourse prefab = _staticDataService.ForObstacle(selectedFloor);
+      return _assets.Instantiate(prefab.gameObject, at).GetComponent<ObstacleCourse>();
     }
 
     public Bullet CreateBullet(Vector3 at, Quaternion rotation) => 
       _assets.Instantiate(AssetPath.BulletPath, at, rotation).GetComponent<Bullet>();
 
-    public AimLevel CreateAimLevel(Vector3 at, Quaternion rotation)
+    public AimLevel CreateAimLevel(int selectedFloor ,Vector3 at, Quaternion rotation)
     {
-      AimLevel aimLevel = _assets.Instantiate(AssetPath.AimLevelPath, at, rotation).GetComponent<AimLevel>();
+      AimLevel prefab = _staticDataService.ForAimLevel(selectedFloor);
+      AimLevel aimLevel = _assets.Instantiate(prefab.gameObject, at, rotation).GetComponent<AimLevel>();
       aimLevel.Construct(this, _hero);
       return aimLevel;
     }

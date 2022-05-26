@@ -7,9 +7,10 @@ namespace CodeBase.Logic.Shoot
 {
   public class AimLevel : MonoBehaviour
   {
+    [SerializeField] private int _id;
     [SerializeField] private Aim[] _aims;
     [SerializeField] private Weapon _weapon;
-    
+    public int ID => _id;
     public event Action OnAimLevelCompleted;
     
     private IGameFactory _factory;

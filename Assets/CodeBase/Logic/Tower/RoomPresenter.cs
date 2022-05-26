@@ -1,3 +1,5 @@
+using CodeBase.Logic.PlayerLogic;
+using CodeBase.Services.SharedData;
 using UnityEngine;
 
 namespace CodeBase.Logic.Tower

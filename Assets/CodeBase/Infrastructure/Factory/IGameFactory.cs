@@ -5,7 +5,6 @@ using CodeBase.Logic.Tower;
 using CodeBase.Logic.Tower.ElevatorLogic;
 using CodeBase.Services;
 using CodeBase.Services.PersistentProgress;
-using CodeBase.StaticData;
 using UnityEngine;
 
 namespace CodeBase.Infrastructure.Factory
@@ -28,6 +27,6 @@ namespace CodeBase.Infrastructure.Factory
     GameObject CreateHud();
     ObstacleCourse CreateObstacleCourse(int selectedFloor, float height);
     Bullet CreateBullet(Vector3 at, Quaternion rotation);
-    AimLevel CreateAimLevel(Vector3 at, Quaternion rotation);
+    AimLevel CreateAimLevel(int selectedFloor ,Vector3 at, Quaternion rotation);
   }
 }

@@ -1,3 +1,4 @@
+using CodeBase.Services.SharedData;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -9,16 +10,18 @@ namespace CodeBase.Logic.PlayerLogic
     [SerializeField] private PlayerRaycaster _raycaster;
     [SerializeField] private CameraRotator _cameraRotator;
     [SerializeField] private WeaponModelHolder _weaponModelHolder;
+    [SerializeField] private Death _death;
 
     [SerializeField] private Transform _cameraPositionPoint;
 
     private Camera _camera;
-    public void Construct(Camera cam)
+    public void Construct(Camera cam, ISharedDataService sharedDataService)
     {
       _mover.Construct();
       _cameraRotator.Construct(cam);
       _raycaster.Construct(cam);
       _weaponModelHolder.Construct(cam);
+      _death.Construct(sharedDataService);
       SetupCamera(cam);
     }
 

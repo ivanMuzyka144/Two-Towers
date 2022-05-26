@@ -38,11 +38,11 @@ namespace CodeBase.Infrastructure.States
       _services.RegisterSingle(SharedDataService());
       _services.RegisterSingle<IInputService>(InputService());
       _services.RegisterSingle<ICursorService>(new GameCursorService());
-      _services.RegisterSingle<IStaticDataService>(new StaticDataService());
+      _services.RegisterSingle(StaticDataService());
       _services.RegisterSingle<IAssetProvider>(new AssetProvider());
       _services.RegisterSingle<IPersistentProgressService>(new PersistentProgressService());
       _services.RegisterSingle<IGameFactory>(new GameFactory(_services.Single<IAssetProvider>(),
-        _services.Single<IPersistentProgressService>(), _services.Single<ISharedDataService>()));
+        _services.Single<IPersistentProgressService>(), _services.Single<ISharedDataService>(), _services.Single<IStaticDataService>()));
       _services.RegisterSingle<ISaveLoadService>(new SaveLoadService(_services.Single<IPersistentProgressService>(), _services.Single<IGameFactory>()));
     }
 
@@ -58,6 +58,13 @@ namespace CodeBase.Infrastructure.States
       ISharedDataService sharedDataService = new SharedDataService();
       sharedDataService.SharedData = new GameSharedData();
       return sharedDataService;
+    }
+
+    private static IStaticDataService StaticDataService()
+    {
+      IStaticDataService staticDataService = new StaticDataService();
+      staticDataService.Load();
+      return staticDataService;
     }
   }
 }

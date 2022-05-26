@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76e3914d71fa4c67b8686a5d603c752c, type: 3}
+  m_Name: AimLevelData
+  m_EditorClassIdentifier: 
+  AimLevelPrefabs:
+  - {fileID: 5123626110901928368, guid: 0ef6129e39bb441bcbc194b245bad91a, type: 3}
+  - {fileID: 5123626110901928368, guid: 4909e1cce62a24b69ace97c51c7cb246, type: 3}
+  - {fileID: 5123626110901928368, guid: efab6d3d481034efea98172c3c44075d, type: 3}
+  - {fileID: 5123626110901928368, guid: b87b39f6073b94748a59a1bb290b824e, type: 3}

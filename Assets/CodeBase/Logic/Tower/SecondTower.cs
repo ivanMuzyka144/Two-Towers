@@ -46,7 +46,7 @@ namespace CodeBase.Logic.Tower
       Room selectedRoom = _rooms[selectedFloor];
       selectedRoom.RoomPresenter.SetupSelectedRoom();
       
-      AimLevel aimLevel= _factory.CreateAimLevel(selectedRoom.transform.position, Quaternion.Euler(0,90,0));
+      AimLevel aimLevel = _factory.CreateAimLevel(selectedFloor, selectedRoom.transform.position, Quaternion.Euler(0,90,0));
     }
   }
 }

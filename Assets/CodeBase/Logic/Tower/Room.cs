@@ -1,18 +1,18 @@
-using System.Collections;
-using System.Collections.Generic;
-using CodeBase.Logic.Tower;
 using UnityEngine;
 
-public class Room : MonoBehaviour
+namespace CodeBase.Logic.Tower
 {
-    [SerializeField] private RoomPresenter _roomPresenter;
-
-    public RoomPresenter RoomPresenter => _roomPresenter;
-    public void Construct(bool isFirst, Color roomColor)
+    public class Room : MonoBehaviour
     {
-        _roomPresenter.SetupColor(roomColor);
-        _roomPresenter.SetupArchitecture(isFirst);
+        [SerializeField] private RoomPresenter _roomPresenter;
+
+        public RoomPresenter RoomPresenter => _roomPresenter;
+        public void Construct(bool isFirst, Color roomColor)
+        {
+            _roomPresenter.SetupColor(roomColor);
+            _roomPresenter.SetupArchitecture(isFirst);
+        }
+    
+    
     }
-    
-    
 }

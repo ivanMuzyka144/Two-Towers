@@ -165,6 +165,7 @@ GameObject:
   - component: {fileID: 8081205083761799890}
   - component: {fileID: 2755636623909492794}
   - component: {fileID: 5770761076097414658}
+  - component: {fileID: 7289327142837392154}
   m_Layer: 4
   m_Name: Hero
   m_TagString: Player
@@ -306,6 +307,7 @@ MonoBehaviour:
   _raycaster: {fileID: 8435642006786164647}
   _cameraRotator: {fileID: 8435642006786164645}
   _weaponModelHolder: {fileID: 5770761076097414658}
+  _death: {fileID: 7289327142837392154}
   _cameraPositionPoint: {fileID: 8435642008353267628}
 --- !u!114 &8435642006786164645
 MonoBehaviour:
@@ -372,6 +374,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _weaponModelHolder: {fileID: 4226245357684707818}
+--- !u!114 &7289327142837392154
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8435642006786164575}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ab463327773a4c618441861e08ba24b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _characterController: {fileID: 8435642006786164574}
 --- !u!1 &8435642007789434582
 GameObject:
   m_ObjectHideFlags: 0

@@ -9,5 +9,7 @@ namespace CodeBase.Infrastructure.AssetManagement
     GameObject Instantiate(string path, Vector3 at);
     GameObject Instantiate(string path, Vector3 at, Quaternion rotation);
     GameObject Instantiate(string path, Transform parent);
+    GameObject Instantiate(GameObject prefab, Vector3 position);
+    GameObject Instantiate(GameObject prefab, Vector3 position, Quaternion rotation);
   }
 }
