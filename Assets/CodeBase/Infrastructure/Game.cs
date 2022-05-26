@@ -1,7 +1,6 @@
 using CodeBase.Infrastructure.States;
 using CodeBase.Logic;
 using CodeBase.Services;
-using CodeBase.Services.Input;
 
 namespace CodeBase.Infrastructure
 {
@@ -12,6 +11,11 @@ namespace CodeBase.Infrastructure
     public Game(ICoroutineRunner coroutineRunner)
     {
       StateMachine = new GameStateMachine(new SceneLoader(coroutineRunner), AllServices.Container, coroutineRunner);
+    }
+
+    public void Update()
+    {
+      StateMachine.Update();
     }
   }
 }

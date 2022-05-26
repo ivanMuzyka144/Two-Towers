@@ -5,6 +5,7 @@ using CodeBase.Logic.PlayerLogic;
 using CodeBase.Logic.Shoot;
 using CodeBase.Logic.Tower;
 using CodeBase.Logic.Tower.ElevatorLogic;
+using CodeBase.Services.InputServiceLogic;
 using CodeBase.Services.PersistentProgress;
 using CodeBase.Services.SharedData;
 using CodeBase.Services.StaticData;
@@ -24,6 +25,7 @@ namespace CodeBase.Infrastructure.Factory
     private readonly IPersistentProgressService _persistentProgressService;
     private readonly ISharedDataService _sharedDataService;
     private readonly IStaticDataService _staticDataService;
+    private readonly IInputService _inputService;
 
     private GameObject _hud;
     private Player _hero;
@@ -33,12 +35,14 @@ namespace CodeBase.Infrastructure.Factory
     public GameFactory(IAssetProvider assets,
       IPersistentProgressService persistentProgressService,
       ISharedDataService sharedDataService,
-      IStaticDataService staticDataService)
+      IStaticDataService staticDataService,
+      IInputService inputService)
     {
       _assets = assets;
       _persistentProgressService = persistentProgressService;
       _sharedDataService = sharedDataService;
       _staticDataService = staticDataService;
+      _inputService = inputService;
     }
 
     public void Cleanup()
@@ -53,7 +57,7 @@ namespace CodeBase.Infrastructure.Factory
     public Player CreateHero(Vector3 at, Quaternion rotation)
     {
       _hero = _assets.Instantiate(AssetPath.HeroPath, at, rotation).GetComponent<Player>();
-      _hero.Construct(Camera.main, _sharedDataService);
+      _hero.Construct(Camera.main, _sharedDataService, _inputService);
       _sharedDataService.SharedData.PlayerData.SpawnPoint = at;
       return _hero;
     }

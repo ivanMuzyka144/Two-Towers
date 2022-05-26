@@ -1,4 +1,5 @@
 
+using CodeBase.Services.InputServiceLogic;
 using UnityEngine;
 
 namespace CodeBase.Logic.PlayerLogic
@@ -11,16 +12,19 @@ namespace CodeBase.Logic.PlayerLogic
         [SerializeField] private float _lookSpeed = 2.0f;
         [SerializeField] private float _lookXLimit = 45.0f;
 
-        private float _rotationX = 0;
-
+        private IInputService _inputService;
         private Camera _playerCamera;
         private bool _setuped;
 
-        public void Construct(Camera cam)
+        private float _rotationX = 0;
+
+        public void Construct(Camera cam, IInputService inputService)
         {
-            _playerCamera = cam;// TODO: add player speed from static data,, Input service
+            _inputService = inputService;
+            _playerCamera = cam;
             _setuped = true;
         }
+
         void Update()
         {
             if (_setuped)
@@ -31,10 +35,11 @@ namespace CodeBase.Logic.PlayerLogic
 
         private void RotatePerson()
         {
-            _rotationX += -Input.GetAxis("Mouse Y") * _lookSpeed;
+            Vector2 mouseAxis = _inputService.MouseAxis;
+            _rotationX += -mouseAxis.y * _lookSpeed;
             _rotationX = Mathf.Clamp(_rotationX, -_lookXLimit, _lookXLimit);
             _playerCamera.transform.localRotation = Quaternion.Euler(_rotationX, 0, 0);
-            transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * _lookSpeed, 0);
+            transform.rotation *= Quaternion.Euler(0, mouseAxis.x * _lookSpeed, 0);
         }
     }
 }

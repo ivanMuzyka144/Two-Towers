@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using CodeBase.Data;
 using CodeBase.Logic.Shoot;
-using CodeBase.Services.Input;
+using CodeBase.Services.InputServiceLogic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -12,12 +12,11 @@ namespace CodeBase.Logic.PlayerLogic
     {
         [SerializeField] private PlayerRaycaster _raycaster;
 
+        private IInputService _inputService;
         private Weapon _weapon;
 
-        public void Construct(IInputService inputService)
-        {
-            
-        }
+        public void Construct(IInputService inputService) => 
+            _inputService = inputService;
 
         public void SetupWeapon(Weapon weapon) => 
             _weapon = weapon;
@@ -29,7 +28,7 @@ namespace CodeBase.Logic.PlayerLogic
         }
 
         private bool CanShoot() => 
-            Input.GetKeyDown(KeyCode.Mouse1) && _weapon != null;
+            _inputService.RightMousePressed && _weapon != null;
 
         private void PerformShooting()
         {

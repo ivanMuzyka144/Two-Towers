@@ -1,5 +1,6 @@
 using System;
 using CodeBase.Data;
+using CodeBase.Services.InputServiceLogic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -9,18 +10,20 @@ namespace CodeBase.Logic.PlayerLogic
   {
     private readonly Vector3 _rayOrigin = new Vector3(0.5f, 0.5f, 0f);
 
+    private IInputService _inputService;
     private Camera _camera;
 
     private bool _setup;
     
-    public void Construct(Camera cam)
+    public void Construct(Camera cam, IInputService inputService)
     {
+      _inputService = inputService;
       _camera = cam;
       _setup = true;
     }
     private void Update()
     {
-      if(_setup && Input.GetKeyDown(KeyCode.Mouse0))
+      if(_setup && _inputService.LeftMousePressed)
         Raycast();
     }
 

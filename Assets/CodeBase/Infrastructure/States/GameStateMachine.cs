@@ -4,6 +4,7 @@ using CodeBase.Infrastructure.Factory;
 using CodeBase.Logic;
 using CodeBase.Services;
 using CodeBase.Services.CursorService;
+using CodeBase.Services.InputServiceLogic;
 using CodeBase.Services.PersistentProgress;
 using CodeBase.Services.SaveLoad;
 using CodeBase.Services.SharedData;
@@ -30,7 +31,8 @@ namespace CodeBase.Infrastructure.States
           services.Single<ICursorService>(), 
           services.Single<IGameFactory>(), 
           coroutineRunner, 
-          services.Single<IWindowService>()),
+          services.Single<IWindowService>(),
+          services.Single<IInputService>()),
         [typeof(DisposableState)] = new DisposableState(this, services, sceneLoader),
       };
     }
@@ -55,6 +57,17 @@ namespace CodeBase.Infrastructure.States
       _activeState = state;
       
       return state;
+    }
+
+    public void Update()
+    {
+      foreach (IExitableState state in _states.Values)
+      {
+        if (state is IUpdatable)
+        {
+          ((IUpdatable) state).Update(); 
+        }
+      }
     }
 
     private TState GetState<TState>() where TState : class, IExitableState => 

@@ -1,4 +1,5 @@
-﻿using CodeBase.Infrastructure.States;
+﻿using System;
+using CodeBase.Infrastructure.States;
 using CodeBase.Logic;
 using UnityEngine;
 
@@ -16,5 +17,9 @@ namespace CodeBase.Infrastructure
       DontDestroyOnLoad(this);
     }
 
+    private void Update()
+    {
+      _game.Update();
+    }
   }
 }

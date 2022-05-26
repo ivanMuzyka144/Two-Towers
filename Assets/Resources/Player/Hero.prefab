@@ -307,6 +307,7 @@ MonoBehaviour:
   _raycaster: {fileID: 8435642006786164647}
   _cameraRotator: {fileID: 8435642006786164645}
   _weaponModelHolder: {fileID: 5770761076097414658}
+  _shootPerformer: {fileID: 2755636623909492794}
   _death: {fileID: 7289327142837392154}
   _cameraPositionPoint: {fileID: 8435642008353267628}
 --- !u!114 &8435642006786164645
