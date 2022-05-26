@@ -13,6 +13,7 @@ namespace CodeBase.Logic.Tower.ElevatorLogic
     [Space(10)]
     [SerializeField] private FloorSelector _selector;
     [SerializeField] private FloorShower _shower;
+    [SerializeField] private FloorInformer _informer;
     
     private FirstTower _firstTower;
     private Player _player;
@@ -22,6 +23,9 @@ namespace CodeBase.Logic.Tower.ElevatorLogic
       _firstTower = firstTower;
       _player = player;
       _selector.Construct(elevatorData, staticDataService);
+      
+      _informer.Construct(staticDataService);
+      _informer.SetupFloor();
     }
 
     public void MoveElevator(int selectedFloor, Vector3 newPosition, Action onCompleted)

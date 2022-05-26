@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f25ecfe3caa47cd91cd6c0858611cfe, type: 3}
   m_Name: GameConfig
   m_EditorClassIdentifier: 
-  HowManyRooms: 4
+  HowManyRooms: 12
   RoomHeight: 5.5

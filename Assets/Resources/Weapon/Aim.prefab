@@ -111,4 +111,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _meshRenderer: {fileID: 6673087818714476587}
-  _aimedMaterial: {fileID: 2100000, guid: 9819ee29cc4a24f08b1b9b803fd609f8, type: 2}
+  _aimedMaterial: {fileID: 2100000, guid: 692aff30b545b48d38a1814807e03b85, type: 2}

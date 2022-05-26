@@ -22,6 +22,7 @@ namespace CodeBase.Logic.Tower.ElevatorLogic
     private ElevatorData _elevatorData;
     private string _currString = "";
 
+    private bool _isSelectionCompleted;
     public void Construct(ElevatorData elevatorData, IStaticDataService staticDataService)
     {
       _elevatorData = elevatorData;
@@ -51,6 +52,9 @@ namespace CodeBase.Logic.Tower.ElevatorLogic
     }
     private void HandleNumberButtonClicked(int numb)
     {
+      if(_isSelectionCompleted)
+        return;
+      
       AppendNumb(numb);
     }
 
@@ -76,12 +80,18 @@ namespace CodeBase.Logic.Tower.ElevatorLogic
 
     private void ClearNumbs()
     {
+      if(_isSelectionCompleted)
+        return;
+      
       _currString = "";
       _screenText.text = _currString;
     }
 
     private void AcceptNumbs()
     {
+      if(_isSelectionCompleted)
+        return;
+      
       if (_currString == ErrorName || _currString == "")
       {
         ClearNumbs();
@@ -97,6 +107,9 @@ namespace CodeBase.Logic.Tower.ElevatorLogic
       }
       else
       {
+        _currString = "->";
+        _screenText.text = _currString;
+        _isSelectionCompleted = true;
         _elevatorData.SelectFloor(currNumb);
       }
     }
