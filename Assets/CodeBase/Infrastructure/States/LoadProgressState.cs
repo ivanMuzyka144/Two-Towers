@@ -2,6 +2,7 @@ using System;
 using CodeBase.Data;
 using CodeBase.Services.PersistentProgress;
 using CodeBase.Services.SaveLoad;
+using UnityEngine;
 
 namespace CodeBase.Infrastructure.States
 {
@@ -41,9 +42,7 @@ namespace CodeBase.Infrastructure.States
     private PlayerProgress NewProgress()
     {
       var progress =  new PlayerProgress();
-
-      
-
+      progress.TimeFromStartGame = Time.time;
       return progress;
     }
   }

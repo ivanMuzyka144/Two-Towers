@@ -9,6 +9,7 @@ using CodeBase.Services.InputServiceLogic;
 using CodeBase.Services.PersistentProgress;
 using CodeBase.Services.SharedData;
 using CodeBase.Services.StaticData;
+using CodeBase.UI.Elements;
 using UnityEngine;
 
 namespace CodeBase.Infrastructure.Factory
@@ -57,7 +58,7 @@ namespace CodeBase.Infrastructure.Factory
     public Player CreateHero(Vector3 at, Quaternion rotation)
     {
       _hero = _assets.Instantiate(AssetPath.HeroPath, at, rotation).GetComponent<Player>();
-      _hero.Construct(Camera.main, _sharedDataService, _inputService);
+      _hero.Construct(Camera.main, _sharedDataService, _inputService, _persistentProgressService);
       _sharedDataService.SharedData.PlayerData.SpawnPoint = at;
       return _hero;
     }
@@ -65,6 +66,10 @@ namespace CodeBase.Infrastructure.Factory
     public GameObject CreateHud()
     {
       _hud = _assets.Instantiate(AssetPath.HudPath);
+      _hud.GetComponentInChildren<JumpPresenter>().Construct(_persistentProgressService);
+      _hud.GetComponentInChildren<FirePresenter>().Construct(_persistentProgressService);
+      _hud.GetComponentInChildren<AimPresenter>().Construct(_persistentProgressService);
+      _hud.GetComponentInChildren<TimePresenter>().Construct(_persistentProgressService);
       return _hud;
     }
 
@@ -110,7 +115,7 @@ namespace CodeBase.Infrastructure.Factory
     {
       AimLevel prefab = _staticDataService.ForAimLevel(selectedFloor);
       AimLevel aimLevel = _assets.Instantiate(prefab.gameObject, at, rotation).GetComponent<AimLevel>();
-      aimLevel.Construct(this, _hero);
+      aimLevel.Construct(this, _hero, _persistentProgressService);
       aimLevel.OnAimLevelCompleted += () => OnAimLevelCompleted?.Invoke();
       return aimLevel;
     }

@@ -1,4 +1,5 @@
 using CodeBase.Services.InputServiceLogic;
+using CodeBase.Services.PersistentProgress;
 using CodeBase.Services.SharedData;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -17,13 +18,16 @@ namespace CodeBase.Logic.PlayerLogic
     [SerializeField] private Transform _cameraPositionPoint;
 
     private Camera _camera;
-    public void Construct(Camera cam, ISharedDataService sharedDataService, IInputService inputService)
+    public void Construct(Camera cam, 
+      ISharedDataService sharedDataService, 
+      IInputService inputService, 
+      IPersistentProgressService progressService)
     {
-      _mover.Construct(inputService);
+      _mover.Construct(inputService, progressService);
       _cameraRotator.Construct(cam, inputService);
       _raycaster.Construct(cam, inputService);
       _weaponModelHolder.Construct(cam);
-      _shootPerformer.Construct(inputService);
+      _shootPerformer.Construct(inputService, progressService);
       _death.Construct(sharedDataService);
       SetupCamera(cam);
     }

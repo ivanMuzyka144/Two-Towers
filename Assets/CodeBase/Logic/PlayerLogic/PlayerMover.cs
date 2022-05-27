@@ -1,4 +1,5 @@
 using CodeBase.Services.InputServiceLogic;
+using CodeBase.Services.PersistentProgress;
 using UnityEngine;
 
 namespace CodeBase.Logic.PlayerLogic
@@ -8,8 +9,9 @@ namespace CodeBase.Logic.PlayerLogic
   {
     [SerializeField] private CharacterController characterController;
 
+    private IPersistentProgressService _progressService;
     private IInputService _inputService;
-    
+
     private float _walkingSpeed = 7.5f;
     private float _runningSpeed = 11.5f;
     private float _jumpSpeed = 8.0f;
@@ -20,8 +22,9 @@ namespace CodeBase.Logic.PlayerLogic
     private bool _setuped;
 
 
-    public void Construct(IInputService inputService)
+    public void Construct(IInputService inputService, IPersistentProgressService progressService)
     {
+      _progressService = progressService;
       _inputService = inputService;
       _setuped = true;
     }
@@ -52,8 +55,13 @@ namespace CodeBase.Logic.PlayerLogic
     private float GetSpeed() =>
       _inputService.LeftShiftPressed ? _runningSpeed : _walkingSpeed;
 
-    private void PerformJump(float movementDirectionY) =>
+    private void PerformJump(float movementDirectionY)
+    {
       _moveDirection.y = CanJump() ? _jumpSpeed : movementDirectionY;
+      
+      if(CanJump())
+        _progressService.Progress.JumpCount++;
+    }
 
     private bool CanJump() =>
       _inputService.JumpButtonPressed && characterController.isGrounded;

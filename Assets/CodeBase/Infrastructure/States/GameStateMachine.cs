@@ -33,7 +33,7 @@ namespace CodeBase.Infrastructure.States
           coroutineRunner, 
           services.Single<IWindowService>(),
           services.Single<IInputService>()),
-        [typeof(DisposableState)] = new DisposableState(this, services, sceneLoader),
+        [typeof(DisposableState)] = new DisposableState(this, services, sceneLoader,  services.Single<ISaveLoadService>()),
       };
     }
     
