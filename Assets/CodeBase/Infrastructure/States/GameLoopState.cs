@@ -4,6 +4,7 @@ using CodeBase.Services.CursorService;
 using CodeBase.Services.InputServiceLogic;
 using CodeBase.UI;
 using CodeBase.UI.Services;
+using CodeBase.UI.Window;
 using UnityEngine;
 
 namespace CodeBase.Infrastructure.States

@@ -1,10 +1,8 @@
 using System;
-using CodeBase.UI.Window;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace CodeBase.UI
+namespace CodeBase.UI.Window
 {
    public class LevelCompletedWindow : WindowBase
    {
